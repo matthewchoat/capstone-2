@@ -27,16 +27,12 @@
 <h2>
     3. Executing the Plan
 </h2>
+<h3>Initial steps</h3>
 <P>* After finishing my classes Architecture diagram, I then followed the guide linked below by Tim Buchalka for setting up a JavaFX Project for JDK 11 Using IntelliJ. So glad I found this video series because it was a perfect introduction to making my first app in JavaFX. https://www.youtube.com/watch?v=WtOgoomDewo</p>
-
 <P>* I also did some additional setup and troubleshooting by following the instructions provided in this resource: http://tutorials.jenkov.com/javafx/your-first-javafx-application.html/</p>
-
-<P>* My REQUIRED ABSTRACT CLASS will belong to my "AbstractShape" class and the other shapes will inherit from it. The abstract shape will have common methods that will run for all shape types (rotate, fall, reverse, clear, etc.).</p>
-<P>* My REQUIRED INTERFACEs are actually pulled directly from JavaFX and I will implement them from my Highscores and SoundController classes.</p>
-<P>* My REQUIRED STREAM function I wrote when I encountered an issue with game slowdown when new pieces were falling. This was happening because my RandomPiece method was having to load every time a piece dropped and it was slowing down the Run() thread. So, I wrote a stream function to generate 50 random, abstract pieces when the game loads or when the level changes. A second stream function then Collects that array list of abstract pieces, shuffles their piece types, and returns them as proper Shapes (or Tetrominos as they are called in Tetris). This stream completely eliminates my game slowdown issue because it's not having to run the randomPiece method every few seconds.</p>
-
 <P>* After the initial setup and poking around in JavaFX, I began creating my packages and Classes in my project. I added some placeholder methods and even borrowed some refactored code from my Javascript Tetris game for things like piece rotation and grid generation. These may or may not need to be rewritten, but it's worth a shot to try.</p>
 
+<h3>Building out Classes and Features</h3>
 <P>* I continued writing logic and some sudocode when I didn't want to get bogged down in Syntax. When I eventually got stuck and needed some guidance on popular JavaFX classes to use for games like this, I found the following guide for making a very basic Tetris game in JavaFX. https://www.youtube.com/watch?v=boAJUSN8fOU&t=9s</p>
 <P>* This guide was great for seeing just a simple implementation of Tetris looked like in JavaFX. I followed some parts of the guide to finish writing certain methods I was blocked on getting to work myself. This guide was helpful, but as stated, it is a VERY barebones implementation of the game and I want to add several more advanced features on my own if time allows.</p>
 <P>* After getting my logic written and classes set up, I needed to connect the UI and animate the pieces. I used this resource to look up Animations and found some really cool transition effects I'd like to also use for my levels. https://www.tutorialspoint.com/javafx/javafx_animations.htm</p>
@@ -47,12 +43,39 @@
 https://stackoverflow.com/questions/23202272/how-to-play-sounds-with-javafx</p>
 <P>* My final steps over the weekend will be to continue testing the application and fixing bugs, commenting my code and refactoring for readability, and possibly importing the game into a React app. I will need to do more research on this to see how much time it might take.</p>
 
+<h3>General Requirements Explanations</h3>
+<P>* My REQUIRED ABSTRACT CLASS will belong to my "AbstractShape" class and the other shapes will inherit from it. The abstract shape will have common methods that will run for all shape types (rotate, fall, reverse, clear, etc.) and it will be used in conjunction with its lower Shape classes at certain points during the game runtime.</p>
+<P>* My REQUIRED INTERFACEs are actually pulled directly from JavaFX and I will implement them from my Highscores and SoundController classes.</p>
+<P>* My REQUIRED STREAM function I wrote when I encountered an issue with game slowdown when new pieces were falling. This was happening because my RandomPiece method was having to load every time a piece dropped and it was slowing down the Run() thread. So, I wrote a stream function to generate 50 random, abstract pieces when the game loads or when the level changes. A second stream function then Collects that array list of abstract pieces, shuffles their piece types, and returns them as proper Shapes (or Tetrominos as they are called in Tetris). This stream completely eliminates my game slowdown issue because it's not having to run the randomPiece method every few seconds.</p>
+<p>* Error Handling: Users cannot break the program with any extra key presses or glitches. If sound or images fail to load or if a high score fails to save, these errors are accounted for and inform the user on troubleshooting options.
+
+<P> My required Lambda is:...</p>
+
+</h3>Bonus Requirements Explanation</h3>
+<P> Incorporate at least 2 SOLID principles of OOD: </p>
+    <p><ol><li>Single Responsibility Priniciple: This principle states that classes and modules should should have responsibility over a single part of the functionality provided by the software, and that responsibility should be entirely encapsulated by the class, module or function. I made sure to separate my project by specific tasks so that when I built my classes, they all had a distinct and singular purpose. For example, I separated my UI initialization class from my UI logic class even though doing so presented some unique challenges to overcome. If I would've kept these two classes combined, the code would be much harder to interpret and the single class would be far too large and be in charge of doing too many tasks at once. I used the following resource to make sure I was properly following this principle:
+    https://medium.com/@severinperez/writing-flexible-code-with-the-single-responsibility-principle-b71c4f3f883f</li>
+    <li>Open Closed Principle: Robert C. Martin defines the Open/Closed Principle by stating that “Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification.”
+    In my game, I utilized several techniques to accomplish the Open/Closed principle such as using Abstract classes and inheritance to generate my game pieces, making as many variables and classes PRIVATE or Package-Specific as I could, and using Getter and Setter methods to retrieve or set private values. I know that there is certainly more I could do to make this application even more secure, so I welcome input on additional feedback and techniques to continue improving my Open/Closed programming mindset.
+    https://stackify.com/solid-design-open-closed-principle/</li>
+    <li>Dependency Inversion Principle: This principle states that high-level modules, which provide complex logic, should be easily reusable and unaffected by changes in low-level modules, which provide utility features. I have introduced Abstraction of my game pieces to carry out this principle. The AbstractShape class does not depend on its lower level classes, but instead, takes the place of its lower level classes when loaded into the game in an abstract state. This abstract class is then randomized and assigned to a lower-level class (my "Tetrimino" classes or just the "Shape" class itself) when necessary by the game logic. This way, dependency is split between the high-level and low-level modules by introducing an abstraction between them and utilizing all levels of the classes only when the situation calls for it. 
+    https://stackify.com/dependency-inversion-principle/</li></ol> </p>
+<P> Incorporate at least 2 Object Oriented Design Patterns: </P>
+</p>
+    <p><ol><li>Facade Pattern: This is a software design pattern that provides a simplified interface to a larger body of code, making the software easier to use, understand, and test if the facade has convenient methods for common tasks. By using the JavaFX library, I am implementing a facade when I build my GameUI class. I am utilizing so many complex Classes by importing the JFX library and simply creating objects of them and defining the parameters, instead of having to create the UI and game framework from scratch. My GamePanel class itself is also a facade because it is built with formulas using arrays and the Pane, Rectangle, and Line classes from JavaFX to initialize the full UI features of the game panel. Then, adding it to the GameUI class is as easy as creating a GamePanel object and the panel displays this data as a simple grid on the UI; the user will not need to know about the many methods and math going on behind the scenes to make the game panel appear on screen. Resources from: http://jargon.js.org/_glossary/FACADE_PATTERN.md  </li>
+    <li>Chain of Responsibility: </li></ol> </p>
+<P> Implement 3rd Party Library: I utilized the JavaFX 3rd party library for my UI, animations, and sound.</P>
+
+
+
+
+
 <h2>
     4. Reflection / Refactor
 </h2>
 <P>* It was definitely a struggle learning an all new library for this project. But I wanted to set my goals high, since I was already familiar with creating text-only games in the console. I am very thankful for all the great resources I found online and for users on stackoverflow.com answering some puzzling issues I was having with certain JavaFX features.</P>
-<P>* Looking back, I can't believe how many lines of code it took to create this application and flesh out all of the features. I definitely need to separate my GameUI class into GameUI and LogicUI classes at some point because it is currently too large. I intended to do this in my Archetecture UML, but getting my UI to work properly meant just writing a lot of my frontend logic directly alongside my UI for JavaFX.</P>
-<P>* My code is still very bloated with repitition and bandaid solutions to bugs I encountered along the way. There were certain things in my UI that I had to write duplicate code for to get them to update when certain game methods were called. I fully intend to refactor this bloated code, but my limited knowlege about JavaFX means I will have to do some further reserach to accomplish this. For now, I'm trying to comment my code thouroughly and rename any methods or variables that aren't clear to their purpose.</P>
+<P>* Looking back, I can't believe how many lines of code it took to create this application and flesh out all of the features. I definitely need to refactor some duplicated code and possibly continue improving things like encapsulation of features to more closely stick to the 4 pillers of OOP.</P>
+<P>* My code is still very bloated with repitition and bandaid solutions to bugs I encountered along the way. There were certain things in my UI that I had to write duplicate code for to get them to update when certain game methods were called. I fully intend to refactor this bloated code, but my limited knowlege about JavaFX means I will have to do some further research to accomplish this. For now, I'm trying to comment my code thouroughly and rename any methods or variables that aren't clear to their purpose.</P>
 *
 *
 *
