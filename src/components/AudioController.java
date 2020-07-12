@@ -135,6 +135,15 @@ public class AudioController {
 			plays(moves);
 		}
 	}
+
+	public boolean isSoundEnabled() {
+		return soundEnabled;
+	}
+
+	public boolean isMusicEnabled() {
+		return musicEnabled;
+	}
+
 	public void setSoundEnabled(boolean b) {
 		soundEnabled = b;
 	}
