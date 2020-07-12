@@ -158,7 +158,7 @@ public class FrontendLogic {
     if (gPanel.canFall(currentGame.getAbsShape()) && !currentGame.isPaused()) {
       currentGame.getAbsShape().setPosition(currentGame.getAbsShape().getPosition().down());
 
-      for (int i = 0; (gPanel.canFall(currentGame.getAbsShape())); i++) {
+      while ((gPanel.canFall(currentGame.getAbsShape()))) {
         currentGame.getAbsShape().setPosition(currentGame.getAbsShape().getPosition().down()); }
 
     } else if (!gPanel.canFall(currentGame.getAbsShape()) && !currentGame.isPaused()) {
