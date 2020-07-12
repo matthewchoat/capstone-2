@@ -5,3 +5,6 @@
 /modules.xml
 /uiDesigner.xml
 /workspace.xml
+.idea/
+/out/
+/Treetris.iml
