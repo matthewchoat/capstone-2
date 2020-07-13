@@ -71,8 +71,8 @@ https://stackoverflow.com/questions/23202272/how-to-play-sounds-with-javafx</p>
 <P>* It was definitely a struggle learning an all new library for this project. But I wanted to set my goals high, since I was already familiar with creating text-only games in the console. I am very thankful for all the great resources I found online and for users on stackoverflow.com answering some puzzling issues I was having with certain JavaFX features.</P>
 <P>* Looking back, I can't believe how many lines of code it took to create this application and flesh out all of the features. I definitely need to refactor some duplicated code and possibly continue improving things like encapsulation of features to more closely stick to the 4 pillars of OOP.</P>
 <P>* My code is still bloated with repetition and bandaid solutions to bugs I encountered along the way. There were certain things in my UI that I had to write duplicate code for to get them to update when certain game methods were called. I fully intend to refactor this bloated code, but my limited knowledge about JavaFX means I will have to do some further research to accomplish this. For now, I'm trying to comment my code thouroughly and rename any methods or variables that aren't clear to their purpose.</P>
-<P>* UPDATE: I have gone through every class and made sure every variable is private with any required getters/setters for cross-class access. I have done everything I can (in my limited experience) to make this program as encapsulated as possible.</P>
-<p>* I'm still in the process of refactoring my GameUI class to take out the bloated initializer code and turn it all into small methods I can call instead.</p>
+<P>* UPDATE: I have gone through every class and made sure every variable is private with any required getters/setters for cross-class access. I'm sure there is more I could still do to refactor this app to align with all 4 pillars of OOP, but this is all the time I had for this round.</P>
+<p>* I'm still in the process of refactoring my GameUI class to take out the code to initialize UI elements from my start() method and move that code into smaller methods I can call instead.</p>
 *
 *
 *
