@@ -79,9 +79,8 @@ public class GameUI extends Application {
 		sound = new AudioController(this.getHostServices().getDocumentBase());
 		soundWorks = sound.audioWorks();
 
-		//shuffling pieces and applying colors
-		logicUI.splitShuffled();
-		logicUI.initColors(colors);
+		//call shape ready
+		logicUI.readyShapes(colors);
 
 		//initializing piece and creating game panel
 		Block.initBlockSize(FIELD_WIDTH / 10);
@@ -220,9 +219,8 @@ public class GameUI extends Application {
 		elementsUI.setAlignment(Pos.CENTER);
 		mainUI.getChildren().addAll(gamePanel, elementsUI);
 
-		//Generating and adding a shape to the game panel
-		absShape = logicUI.generate();
-		gamePanel.add(absShape);
+		genAddShape();
+
 
 		//starting the game timer
 		timer = new AnimationTimer() {
@@ -248,7 +246,80 @@ public class GameUI extends Application {
 				last = current;
 			}
 		};
+		keyboardControls(scene, mainUI);
+		mouseControls(mainUI);
 
+		initStageDisplay(scene, mainUI);
+	}
+
+	//game over UI for highscore game and non-highscore game
+	protected void gameOverUI() {
+		gameSpeed = 0.6;
+		playBtn.setDisable(true);
+		startBtn.setText("Start");
+		sound.gameOverSound();
+		logicUI.pauseNoSound();
+		if (board.highScoreCheck(scores)) {
+			Alert alert = new Alert(AlertType.NONE);
+			alert.initOwner(stageDisplay);
+			alert.initModality(Modality.APPLICATION_MODAL);
+			alert.setContentText(
+					"Game Over! Final Score: " + scores + " at level " + level + "\n Save your score to the leaderboard?");
+			alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+			//Game Over UI if HighScore
+			Runnable run = new Runnable() {
+				@Override
+				public void run() {
+					alert.showAndWait();
+					if (alert.getResult().equals(ButtonType.YES)) {
+						board.showUpdatedScoreboard(stageDisplay, scores);
+					}
+					gamePanel.reset();
+					absShape = logicUI.generate();
+					gamePanel.add(absShape);
+					scores = 0;
+					level = 0;
+					points.setText("SCORE\n" + scores +"\nLEVEL\n" + level);
+				}
+			};
+			Platform.runLater(run);
+			//Game Over UI if not HighScore
+		} else {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.initOwner(stageDisplay);
+			alert.initModality(Modality.APPLICATION_MODAL);
+			alert.setContentText("Game Over! Final Score: " + scores + " at level " + level + "\n Try again for a highscore!");
+			alert.setOnHidden(e -> {
+				gamePanel.reset();
+				absShape = logicUI.generate();
+				gamePanel.add(absShape);
+				scores = 0;
+				level = 0;
+				points.setText("SCORE\n" + scores +"\nLEVEL\n" + level);
+			});
+			Platform.runLater(alert::showAndWait);
+		}
+	}
+
+	private void genAddShape(){
+		//Generating and adding a shape to the game panel
+		absShape = logicUI.generate();
+		gamePanel.add(absShape);}
+
+	private void mouseControls(HBox mainUI){
+		//Mouse click on main UI to return x,y position
+		mainUI.setOnMousePressed(e -> {
+			xInitialize = e.getSceneX();
+			yInitialize = e.getSceneY();
+		});
+		//Click-and-drag to move UI window
+		mainUI.setOnMouseDragged(e -> {
+			stageDisplay.setX(e.getScreenX() - xInitialize);
+			stageDisplay.setY(e.getScreenY() - yInitialize);
+		});}
+
+	private void keyboardControls(Scene scene, HBox mainUI){
 		//Switch case for keyboard controls
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
 			switch (e.getCode()) {
@@ -304,18 +375,9 @@ public class GameUI extends Application {
 				default:
 					break;
 			}
-		});
+		});}
 
-		//Mouse click on main UI to return x,y position
-		mainUI.setOnMousePressed(e -> {
-			xInitialize = e.getSceneX();
-			yInitialize = e.getSceneY();
-		});
-		//Click-and-drag to move UI window
-		mainUI.setOnMouseDragged(e -> {
-			stageDisplay.setX(e.getScreenX() - xInitialize);
-			stageDisplay.setY(e.getScreenY() - yInitialize);
-		});
+	private void initStageDisplay(Scene scene, HBox mainUI){
 		//Setting backgrounds for StageDisplay, Scene, and mainUI
 		stageDisplay.initStyle(StageStyle.TRANSPARENT);
 		scene.setFill(TRANSPARENT);
@@ -328,58 +390,7 @@ public class GameUI extends Application {
 		stageDisplay.setTitle("Treetris");
 		//setting the scene to be shown in the stageDisplay
 		stageDisplay.setScene(scene);
-		stageDisplay.show();
-	}
-
-	//game over UI for highscore game and non-highscore game
-	protected void gameOverUI() {
-		gameSpeed = 0.6;
-		playBtn.setDisable(true);
-		startBtn.setText("Start");
-		sound.gameOverSound();
-		logicUI.pauseNoSound();
-		if (board.highScoreCheck(scores)) {
-			Alert alert = new Alert(AlertType.NONE);
-			alert.initOwner(stageDisplay);
-			alert.initModality(Modality.APPLICATION_MODAL);
-			alert.setContentText(
-					"Game Over! Final Score: " + scores + " at level " + level + "\n Save your score to the leaderboard?");
-			alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-
-			//Game Over UI if HighScore
-			Runnable run = new Runnable() {
-				@Override
-				public void run() {
-					alert.showAndWait();
-					if (alert.getResult().equals(ButtonType.YES)) {
-						board.showUpdatedScoreboard(stageDisplay, scores);
-					}
-					gamePanel.reset();
-					absShape = logicUI.generate();
-					gamePanel.add(absShape);
-					scores = 0;
-					level = 0;
-					points.setText("SCORE\n" + scores +"\nLEVEL\n" + level);
-				}
-			};
-			Platform.runLater(run);
-			//Game Over UI if not HighScore
-		} else {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.initOwner(stageDisplay);
-			alert.initModality(Modality.APPLICATION_MODAL);
-			alert.setContentText("Game Over! Final Score: " + scores + " at level " + level + "\n Try again for a highscore!");
-			alert.setOnHidden(e -> {
-				gamePanel.reset();
-				absShape = logicUI.generate();
-				gamePanel.add(absShape);
-				scores = 0;
-				level = 0;
-				points.setText("SCORE\n" + scores +"\nLEVEL\n" + level);
-			});
-			Platform.runLater(alert::showAndWait);
-		}
-	}
+		stageDisplay.show();}
 
 	//UI for updating score, level, and triggering level change transition effect
 	public void levelChange(int s) {

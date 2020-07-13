@@ -3,21 +3,18 @@
 package game;
 
 import components.GamePanel;
-import controlsUI.Button;
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
-import components.AudioController;
 import tetrominos.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,6 +26,28 @@ public class FrontendLogic {
   public FrontendLogic(GameUI currentGame) {
     this.currentGame = currentGame;
   }
+
+
+
+  // This Lambda function streams a list of 50 abstract shape strings, shuffles them, and returns as a joined string.
+  // This function was necessary to write to reduce piece generation load times during gameplay by setting up 50 shapes at once instead of having to generate a new shape after every turn.
+  Function<String[], String> shuffleLambda = elements -> {
+    return Stream.iterate(Arrays.asList(elements), list -> {
+      Collections.shuffle(list = new ArrayList<>(list));
+      return list;
+    }).skip(1).flatMap(List::stream).limit(50).collect(Collectors.joining());
+  };
+
+  //splitting the returned shuffleLambda string into a single number to be used for assigning a random Tetromino type.
+  void splitShuffled(Function<String[], String> shuffleLambda) {
+    randTetrimino = shuffleLambda.apply("0123456".split(""));
+  }
+
+  //retrieving a random tetromino from the shuffled list
+  private int getPiece(int piecePosition) {
+    return Integer.parseInt(randTetrimino.charAt(piecePosition) + "");
+  }
+
   //initialize tetromino Colors to be assigned randomly
   void initColors(Color[] colors) {
     colors[0] = FIREBRICK;
@@ -38,24 +57,12 @@ public class FrontendLogic {
     colors[4] = DARKVIOLET;
   }
 
-  //Stream for shuffling the randomly generated tetriminos and returning as a mapped list. This streams up to 50 random tetriminos at once before the game starts. Reducing piece generation load times during gameplay.
-  private <T> Stream<T> stream(T[] elements) {
-    return Stream.iterate(Arrays.asList(elements), list -> {
-      Collections.shuffle(list = new ArrayList<>(list));
-      return list;
-    }).skip(1).flatMap(List::stream);
-  }
+  //shuffling random shapes and applying colors
+  public void readyShapes(Color[] colors){
+    splitShuffled(shuffleLambda);
+    initColors(colors);}
 
-  //splitting the shuffled list into 50 individual tetrominos
-  void splitShuffled() {
-    randTetrimino = this.stream("0123456".split("")).limit(50).collect(Collectors.joining());
-  }
-  //retrieving a random tetromino from the shuffled list
-  private int getPiece(int piecePosition) {
-    return Integer.parseInt(randTetrimino.charAt(piecePosition) + "");
-  }
-
-  //Pulls from the randomly generated 50 AbstractShapes and assigns them to a Tetromino type.
+  //Generates a Tetromino from the 50 AbstractShapes and assigns it a type based on the string number chosen randomly in the splitShuffled method and shuffleLambda function.
   AbstractShape generate() {
     int type = getPiece(currentGame.getTetriminoNum());
     currentGame.incrementTetriminoNum();
@@ -93,11 +100,11 @@ public class FrontendLogic {
     return genPiece;
   }
 
-  //Chooses the NextUp Tetromino Shape from the 50 randomly generated AbstractShapes.
+  //Chooses the NextUp Tetromino Shape and assigns it a type based on the random string number from the shuffleLambda function.
   private AbstractShape getNext(int tetriminoNum) {
     int nextPieceNo;
     if (tetriminoNum > 49) { //this relates to the stream random function
-      splitShuffled();
+      splitShuffled(shuffleLambda);
       nextPieceNo = 0;
     } else {
       nextPieceNo = tetriminoNum;
@@ -132,6 +139,7 @@ public class FrontendLogic {
     genPiece.setFill(currentGame.getColors()[(int) (Math.random() * 5)]);
     return genPiece;
   }
+
 
   //move pieces down, check if pieces would spill over the game panel (game over condition) and check for removable lines
   void fallLogic() {
