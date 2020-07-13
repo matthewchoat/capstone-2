@@ -72,7 +72,7 @@ https://stackoverflow.com/questions/23202272/how-to-play-sounds-with-javafx</p>
 <P>* Looking back, I can't believe how many lines of code it took to create this application and flesh out all of the features. I definitely need to refactor some duplicated code and possibly continue improving things like encapsulation of features to more closely stick to the 4 pillers of OOP.</P>
 <P>* My code is still bloated with repetition and bandaid solutions to bugs I encountered along the way. There were certain things in my UI that I had to write duplicate code for to get them to update when certain game methods were called. I fully intend to refactor this bloated code, but my limited knowlege about JavaFX means I will have to do some further research to accomplish this. For now, I'm trying to comment my code thouroughly and rename any methods or variables that aren't clear to their purpose.</P>
 <P>* UPDATE: I have gone through every class and made sure every variable is private with any required getters/setters for cross-class access. I have done everything I can (in my limited experience) to make this program as encapsulated as possible.</P>
-*
+<p>* I'm still in the process of refactoring my GameUI class to take out the bloated initializer code and turn it all into small methods I can call instead.</p>
 *
 *
 *

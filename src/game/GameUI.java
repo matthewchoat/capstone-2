@@ -1,4 +1,4 @@
-//This class contains all UI elements. I'll try to comment to explain features.
+//This class contains all UI elements. See additional comments for more information on each method.
 package game;
 //Java imports for Open SDK 11, Corretto
 import java.awt.Toolkit;
@@ -39,7 +39,7 @@ import tetrominos.AbstractShape;
 
 import static javafx.scene.paint.Color.*;
 public class GameUI extends Application {
-	//initializing all required private game variables
+	//initializing all required game variables
 	private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
 			SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight(),
 			SCENE_HEIGHT = 5 * SCREEN_HEIGHT / 6, SCENE_WIDTH = 4 * SCENE_HEIGHT / 3, FIELD_HEIGHT = SCENE_HEIGHT - 50,
@@ -54,7 +54,6 @@ public class GameUI extends Application {
 	private Image windowBG = new Image("/media/pineoak.jpg");
 	private Color fallen = SADDLEBROWN;
 	private Label points, instructions, title;
-	//initializing package-specific variables
 	private AudioController sound;
 	private AbstractShape absShape;
 	private long last = 0;
@@ -70,27 +69,152 @@ public class GameUI extends Application {
 	//starting the game thread, rendering all elements of the UI.
 	@Override
 	public void start(Stage stage) {
-
-		//initializing buttons, board, sound, shuffled pieces, and piece colors
+		//initializing buttons, board, sound, and piece colors
 		Button.initBtn(SCREEN_HEIGHT);
 		stageDisplay = stage;
 		board = new Scoreboard();
 		board.init();
 		sound = new AudioController(this.getHostServices().getDocumentBase());
 		soundWorks = sound.audioWorks();
-
-		//call shape ready
-		logicUI.readyShapes(colors);
-
-		//initializing piece and creating game panel
+		//initializing block size and creating game panel
 		Block.initBlockSize(FIELD_WIDTH / 10);
 		gamePanel = new GamePanel(Block.getSIZE()*10, Block.getSIZE()*20, SCENE_HEIGHT);
-
-		//creating main HorizontalBox for UI and adding accompanying Scene
+		//creating main HorizontalBox for main UI and creating accompanying Scene
 		HBox mainUI = new HBox(SCREEN_WIDTH * 0.03);
 		mainUI.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(mainUI, SCENE_WIDTH, SCENE_HEIGHT);
+		//creating all HBoxes and VBoxes that will be children of "mainUI" HBox
+		createBoxes(mainUI);
+		//ready shapes for game start
+		logicUI.readyShapes(colors);
+		//Generating and adding a shape to the game panel
+		genAddShape();
+		//starting the game timer to handle animations
+		initAnimationTimer();
+		//enabling keyboard controls
+		keyboardControls(scene, mainUI);
+		//enabling mouse controls
+		mouseControls(mainUI);
+		//initializing the stage display made up of a scene and mainUI HBox with children boxes
+		initStageDisplay(scene, mainUI);
+	}
 
+	//Initializing the JavaFX game timer to handle animation timing and pause functions
+	private void initAnimationTimer(){
+		timer = new AnimationTimer() {
+			double gameTime = 0;
+			//Overriding the "AnimationTimer" JavaFX class to support pausing the game
+			@Override
+			public void handle(long current) {
+				long dt = current - last;
+				//pause game if window loses focus
+				gamePanel.requestFocus();
+				if (!stageDisplay.isFocused()) {
+					logicUI.pause();
+				}
+				gameTime += dt;
+				if (gameTime / 1000000000 >= gameSpeed) {
+					gameTime = 0;
+					if (gamePanel.isReady()) {
+						sound.move();
+						logicUI.fallLogic();
+					}
+				}
+				last = current;
+			}
+		};}
+
+	//Generating and adding a shape to the game panel
+	private void genAddShape(){
+		absShape = logicUI.generate();
+		gamePanel.add(absShape);}
+
+	//Mouse click on main UI to return x,y position
+	private void mouseControls(HBox mainUI){
+		mainUI.setOnMousePressed(e -> {
+			xInitialize = e.getSceneX();
+			yInitialize = e.getSceneY();
+		});
+		//Click-and-drag to move UI window
+		mainUI.setOnMouseDragged(e -> {
+			stageDisplay.setX(e.getScreenX() - xInitialize);
+			stageDisplay.setY(e.getScreenY() - yInitialize);
+		});}
+
+	//Switch case for keyboard controls
+	private void keyboardControls(Scene scene, HBox mainUI){
+		scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+			switch (e.getCode()) {
+				case RIGHT:
+					if (gamePanel.canMoveRight(absShape) && !paused) {
+						absShape.setPosition(absShape.getPosition().right());
+					}
+					break;
+				case LEFT:
+					if (gamePanel.canMoveLeft(absShape) && !paused) {
+						absShape.setPosition(absShape.getPosition().left());
+					}
+					break;
+				case DOWN:
+					if (gamePanel.isReady()) {
+						sound.move();
+						logicUI.fallLogic();
+					}
+					break;
+				case SPACE:
+					if (gamePanel.isReady()) {
+						sound.move();
+						logicUI.hardDropLogic();
+					}
+					break;
+				case ENTER:
+					if(e.isAltDown()) {
+						if(stageDisplay.isFullScreen()) {
+							mainUI.setBackground(new Background(new BackgroundImage(windowBG, null, null, null, null)));
+						}else {
+							mainUI.setBackground(new Background(new BackgroundImage(windowBG, null, null, null, null)));
+						}
+						stageDisplay.setFullScreen(!stageDisplay.isFullScreen());
+						gamePanel.initGamePanel((int) scene.getHeight());
+						e.consume();
+						break;
+					}else {
+
+					}
+				case UP:
+					if (gamePanel.canRotate(absShape) && !paused) {
+						sound.spin();
+						absShape.Rotate();
+					}
+					break;
+				case ESCAPE:
+					if (!paused) {
+						logicUI.pause();
+					} else {
+						logicUI.resumeGame();
+					}
+					break;
+				default:
+					break;
+			}
+		});}
+
+	//Setting backgrounds for StageDisplay, Scene, and mainUI
+	private void initStageDisplay(Scene scene, HBox mainUI){
+		stageDisplay.initStyle(StageStyle.TRANSPARENT);
+		scene.setFill(TRANSPARENT);
+		mainUI.setBackground(new Background(new BackgroundImage(windowBG, null, null, null, null)));
+		//stylesheet link for custom checkbox styling
+		scene.getStylesheets().addAll("game/checkbox.css");
+		//Setting messages for Full-screen mode, and title
+		stageDisplay.setFullScreenExitKeyCombination(KeyCombination.keyCombination("CTRL+ALT+f"));
+		stageDisplay.setFullScreenExitHint("ALT + Enter to exit full screen mode");
+		stageDisplay.setTitle("Treetris");
+		//setting the scene to be shown in the stageDisplay
+		stageDisplay.setScene(scene);
+		stageDisplay.show();}
+
+	public void createBoxes(HBox mainUI){
 		//creating new Vertical Box to include various UI elements
 		VBox elementsUI = new VBox(SCREEN_HEIGHT * 0.02);
 
@@ -168,12 +292,14 @@ public class GameUI extends Application {
 		soundEnabled.setTextFill(WHITE);
 		CheckBox musicEnabled = new CheckBox("Music");
 		musicEnabled.setTextFill(WHITE);
+
 		//Creating Vertical Boxes for audio control labels
 		VBox audioControls = new VBox(0);
 		VBox toggleMuteLabel = new VBox();
 		VBox toggleMusicLabel = new VBox();
 		VBox toggleSoundLabel = new VBox();
 		toggleSoundLabel.setAlignment(Pos.CENTER);
+
 		//defining conditions for music/sound/mute checkboxes
 		musicEnabled.setOnAction(e -> {
 			if (soundWorks) {
@@ -214,42 +340,55 @@ public class GameUI extends Application {
 		audioCheckBoxes.getChildren().addAll(mute, soundEnabled, musicEnabled);
 		audioControls.getChildren().addAll(toggleMusicLabel,toggleMuteLabel, toggleSoundLabel, audioCheckBoxes);
 		audioControls.setAlignment(Pos.CENTER);
+
 		//adding all sub-Boxes to main UI box
 		elementsUI.getChildren().addAll(titlePanel, about,upNextBox, scoreBoard, buttonBox, audioControls);
 		elementsUI.setAlignment(Pos.CENTER);
-		mainUI.getChildren().addAll(gamePanel, elementsUI);
+		mainUI.getChildren().addAll(gamePanel, elementsUI);}
 
-		genAddShape();
-
-
-		//starting the game timer
-		timer = new AnimationTimer() {
-			double gameTime = 0;
-
-			//Overriding the "AnimationTimer" JavaFX class to support pausing the game
-			@Override
-			public void handle(long current) {
-				long dt = current - last;
-				//pause game if window loses focus
-				gamePanel.requestFocus();
-				if (!stageDisplay.isFocused()) {
-					logicUI.pause();
-				}
-				gameTime += dt;
-				if (gameTime / 1000000000 >= gameSpeed) {
-					gameTime = 0;
-					if (gamePanel.isReady()) {
-						sound.move();
-						logicUI.fallLogic();
-					}
-				}
-				last = current;
+	//UI for updating score, level, and triggering level change transition effect
+	public void levelChange(int s) {
+		scores += s;
+		if (scores >= 100) {  //LEVEL 0
+			if (scores < 200) {  //LEVEL 1
+				gameSpeed = 0.55;
+				level = 1;
+				gamePanel.invertPanelColors(true);
+			} else if (scores < 300) { //LEVEL 2
+				gameSpeed = 0.50;
+				level = 2;
+				gamePanel.invertPanelColors(false);
+			} else if (scores < 400) { //LEVEL 3
+				gameSpeed = 0.45;
+				level = 3;
+				gamePanel.invertPanelColors(true);
+			} else if (scores < 500){ //LEVEL 4
+				gameSpeed = 0.40;
+				level = 4;
+				gamePanel.invertPanelColors(false);
+			} else if (scores < 650){ //LEVEL 5
+				gameSpeed = 0.35;
+				level = 5;
+				gamePanel.invertPanelColors(true);
+			} else if (scores < 800){ //LEVEL 6
+				gameSpeed = 0.27;
+				level = 6;
+				gamePanel.invertPanelColors(false);
+			} else if (scores < 950){ //LEVEL 7
+				gameSpeed = 0.17;
+				level = 7;
+				gamePanel.invertPanelColors(true);
+			} else if (scores < 1200){ //LEVEL 8
+				gameSpeed = 0.12;
+				level = 8;
+				gamePanel.invertPanelColors(false);
+			}else  {                  //LEVEL 9
+				gameSpeed = 0.09;
+				level = 9;
+				gamePanel.invertPanelColors(true);
 			}
-		};
-		keyboardControls(scene, mainUI);
-		mouseControls(mainUI);
-
-		initStageDisplay(scene, mainUI);
+		}
+		points.setText("SCORE\n" + scores + "\nLEVEL\n" + level);
 	}
 
 	//game over UI for highscore game and non-highscore game
@@ -300,141 +439,6 @@ public class GameUI extends Application {
 			});
 			Platform.runLater(alert::showAndWait);
 		}
-	}
-
-	private void genAddShape(){
-		//Generating and adding a shape to the game panel
-		absShape = logicUI.generate();
-		gamePanel.add(absShape);}
-
-	private void mouseControls(HBox mainUI){
-		//Mouse click on main UI to return x,y position
-		mainUI.setOnMousePressed(e -> {
-			xInitialize = e.getSceneX();
-			yInitialize = e.getSceneY();
-		});
-		//Click-and-drag to move UI window
-		mainUI.setOnMouseDragged(e -> {
-			stageDisplay.setX(e.getScreenX() - xInitialize);
-			stageDisplay.setY(e.getScreenY() - yInitialize);
-		});}
-
-	private void keyboardControls(Scene scene, HBox mainUI){
-		//Switch case for keyboard controls
-		scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-			switch (e.getCode()) {
-				case RIGHT:
-					if (gamePanel.canMoveRight(absShape) && !paused) {
-						absShape.setPosition(absShape.getPosition().right());
-					}
-					break;
-				case LEFT:
-					if (gamePanel.canMoveLeft(absShape) && !paused) {
-						absShape.setPosition(absShape.getPosition().left());
-					}
-					break;
-				case DOWN:
-					if (gamePanel.isReady()) {
-						sound.move();
-						logicUI.fallLogic();
-					}
-					break;
-				case SPACE:
-					if (gamePanel.isReady()) {
-						sound.move();
-						logicUI.hardDropLogic();
-					}
-					break;
-				case ENTER:
-					if(e.isAltDown()) {
-						if(stageDisplay.isFullScreen()) {
-							mainUI.setBackground(new Background(new BackgroundImage(windowBG, null, null, null, null)));
-						}else {
-							mainUI.setBackground(new Background(new BackgroundImage(windowBG, null, null, null, null)));
-						}
-						stageDisplay.setFullScreen(!stageDisplay.isFullScreen());
-						gamePanel.initGamePanel((int) scene.getHeight());
-						e.consume();
-						break;
-					}else {
-
-					}
-				case UP:
-					if (gamePanel.canRotate(absShape) && !paused) {
-						sound.spin();
-						absShape.Rotate();
-					}
-					break;
-				case ESCAPE:
-					if (!paused) {
-						logicUI.pause();
-					} else {
-						logicUI.resumeGame();
-					}
-					break;
-				default:
-					break;
-			}
-		});}
-
-	private void initStageDisplay(Scene scene, HBox mainUI){
-		//Setting backgrounds for StageDisplay, Scene, and mainUI
-		stageDisplay.initStyle(StageStyle.TRANSPARENT);
-		scene.setFill(TRANSPARENT);
-		mainUI.setBackground(new Background(new BackgroundImage(windowBG, null, null, null, null)));
-		//stylesheet link for custom checkbox styling
-		scene.getStylesheets().addAll("game/checkbox.css");
-		//Setting messages for Full-screen mode, and title
-		stageDisplay.setFullScreenExitKeyCombination(KeyCombination.keyCombination("CTRL+ALT+f"));
-		stageDisplay.setFullScreenExitHint("ALT + Enter to exit full screen mode");
-		stageDisplay.setTitle("Treetris");
-		//setting the scene to be shown in the stageDisplay
-		stageDisplay.setScene(scene);
-		stageDisplay.show();}
-
-	//UI for updating score, level, and triggering level change transition effect
-	public void levelChange(int s) {
-		scores += s;
-		if (scores >= 100) {  //LEVEL 0
-			if (scores < 200) {  //LEVEL 1
-				gameSpeed = 0.55;
-				level = 1;
-				gamePanel.invertPanelColors(true);
-			} else if (scores < 300) { //LEVEL 2
-				gameSpeed = 0.50;
-				level = 2;
-				gamePanel.invertPanelColors(false);
-			} else if (scores < 400) { //LEVEL 3
-				gameSpeed = 0.45;
-				level = 3;
-				gamePanel.invertPanelColors(true);
-			} else if (scores < 500){ //LEVEL 4
-				gameSpeed = 0.40;
-				level = 4;
-				gamePanel.invertPanelColors(false);
-			} else if (scores < 650){ //LEVEL 5
-				gameSpeed = 0.35;
-				level = 5;
-				gamePanel.invertPanelColors(true);
-			} else if (scores < 800){ //LEVEL 6
-				gameSpeed = 0.27;
-				level = 6;
-				gamePanel.invertPanelColors(false);
-			} else if (scores < 950){ //LEVEL 7
-				gameSpeed = 0.17;
-				level = 7;
-				gamePanel.invertPanelColors(true);
-			} else if (scores < 1200){ //LEVEL 8
-				gameSpeed = 0.12;
-				level = 8;
-				gamePanel.invertPanelColors(false);
-			}else  {                  //LEVEL 9
-				gameSpeed = 0.09;
-				level = 9;
-				gamePanel.invertPanelColors(true);
-			}
-		}
-		points.setText("SCORE\n" + scores + "\nLEVEL\n" + level);
 	}
 
 	//Getters and settings to facilitate Class encapsulation
