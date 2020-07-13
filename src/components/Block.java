@@ -115,5 +115,4 @@ public class Block extends Pane implements Comparable<Block> {
 		this.b = b;
 	}
 
-
 }

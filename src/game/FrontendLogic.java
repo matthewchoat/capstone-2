@@ -27,8 +27,6 @@ public class FrontendLogic {
     this.currentGame = currentGame;
   }
 
-
-
   // This Lambda function streams a list of 50 abstract shape strings, shuffles them, and returns as a joined string.
   // This function was necessary to write to reduce piece generation load times during gameplay by setting up 50 shapes at once instead of having to generate a new shape after every turn.
   Function<String[], String> shuffleLambda = elements -> {
@@ -154,7 +152,7 @@ public class FrontendLogic {
       if (gPanel.isGameOver())
         currentGame.gameOverUI();
       else
-        gPanel.add(currentGame.getAbsShape());
+        gPanel.addShapeToPanel(currentGame.getAbsShape());
 
       gPanel.checkRemovableLines(currentGame.getSound(), currentGame);
     }
@@ -176,7 +174,7 @@ public class FrontendLogic {
       if (gPanel.isGameOver())
         currentGame.gameOverUI();
       else
-        gPanel.add(currentGame.getAbsShape());
+        gPanel.addShapeToPanel(currentGame.getAbsShape());
 
       gPanel.checkRemovableLines(currentGame.getSound(), currentGame);
     }
@@ -224,4 +222,3 @@ public class FrontendLogic {
     }
   }
 }
-

@@ -127,7 +127,7 @@ public class GameUI extends Application {
 	//Generating and adding a shape to the game panel
 	private void genAddShape(){
 		absShape = logicUI.generate();
-		gamePanel.add(absShape);}
+		gamePanel.addShapeToPanel(absShape);}
 
 	//Mouse click on main UI to return x,y position
 	private void mouseControls(HBox mainUI){
@@ -274,7 +274,7 @@ public class GameUI extends Application {
 			playBtn.setDisable(false);
 			gamePanel.reset();
 			absShape = logicUI.generate();
-			gamePanel.add(absShape);
+			gamePanel.addShapeToPanel(absShape);
 			scores = 0;
 			points.setText("SCORE\n" + scores +"\nLEVEL\n" + level);
 			logicUI.resumeGame();
@@ -416,7 +416,7 @@ public class GameUI extends Application {
 					}
 					gamePanel.reset();
 					absShape = logicUI.generate();
-					gamePanel.add(absShape);
+					gamePanel.addShapeToPanel(absShape);
 					scores = 0;
 					level = 0;
 					points.setText("SCORE\n" + scores +"\nLEVEL\n" + level);
@@ -432,7 +432,7 @@ public class GameUI extends Application {
 			alert.setOnHidden(e -> {
 				gamePanel.reset();
 				absShape = logicUI.generate();
-				gamePanel.add(absShape);
+				gamePanel.addShapeToPanel(absShape);
 				scores = 0;
 				level = 0;
 				points.setText("SCORE\n" + scores +"\nLEVEL\n" + level);
