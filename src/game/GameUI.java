@@ -3,6 +3,7 @@ package game;
 //Java imports for Open SDK 11, Corretto
 import java.awt.Toolkit;
 //Open JavaFX for SDK 11 imports
+import components.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,14 +27,10 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import components.AudioController;
 
 //custom package imports
 import controlsUI.Button;
-import components.piece;
-import components.GamePanel;
-import components.GridPosition;
-import components.UpNextPanel;
+import components.Piece;
 import highscores.Scoreboard;
 import tetrominos.AbstractShape;
 
@@ -69,7 +66,7 @@ public class GameUI extends Application {
 	//starting the game thread, rendering all elements of the UI.
 	@Override
 	public void start(Stage stage) {
-		//initializing buttons, board, sound, and piece colors
+		//initializing buttons, board, sound, and Piece colors
 		Button.initBtn(SCREEN_HEIGHT);
 		stageDisplay = stage;
 		board = new Scoreboard();
@@ -77,8 +74,8 @@ public class GameUI extends Application {
 		sound = new AudioController(this.getHostServices().getDocumentBase());
 		soundWorks = sound.audioWorks();
 		//initializing block size and creating game panel
-		piece.initPieceSize(FIELD_WIDTH / 10);
-		gamePanel = new GamePanel(piece.getSIZE()*10, piece.getSIZE()*20, SCENE_HEIGHT);
+		Piece.initPieceSize(FIELD_WIDTH / 10);
+		gamePanel = new GamePanel(Piece.getSIZE()*10, Piece.getSIZE()*20, SCENE_HEIGHT);
 		//creating main HorizontalBox for main UI and creating accompanying Scene
 		HBox mainUI = new HBox(SCREEN_WIDTH * 0.03);
 		mainUI.setAlignment(Pos.CENTER);
@@ -221,7 +218,7 @@ public class GameUI extends Application {
 		//creating new Horizontal box for my Next tetrimino preview panel
 		HBox upNextBox = new HBox(2);
 		upNextBox.setAlignment(Pos.CENTER);
-		upNext = new UpNextPanel(piece.getSIZE() * 5, piece.getSIZE() * 5);
+		upNext = new UpNextPanel(Piece.getSIZE() * 5, Piece.getSIZE() * 5);
 		upNextBox.getChildren().addAll(upNext);
 
 		//creating new Horizontal box for the Game Title

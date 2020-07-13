@@ -1,6 +1,6 @@
 package tetrominos;
 
-import components.piece;
+import components.Piece;
 import components.GridPosition;
 
 public class T extends Shape {
@@ -11,10 +11,10 @@ public class T extends Shape {
 		getOffSets()[2] = getOffSets()[1].up();
 		getOffSets()[3] = getOffSets()[1].right();
 
-		setOne(new piece(pos.add(getOffSets()[0])));
-		setTwo(new piece(pos.add(getOffSets()[1])));
-		setThree(new piece(pos.add(getOffSets()[2])));
-		setFour(new piece(pos.add(getOffSets()[3])));
+		setOne(new Piece(pos.add(getOffSets()[0])));
+		setTwo(new Piece(pos.add(getOffSets()[1])));
+		setThree(new Piece(pos.add(getOffSets()[2])));
+		setFour(new Piece(pos.add(getOffSets()[3])));
 		addBlocksToShape(getOne(), getTwo(), getThree(), getFour());
 	}
 

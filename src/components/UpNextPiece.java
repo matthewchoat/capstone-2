@@ -2,7 +2,7 @@ package components;
 
 import javafx.scene.paint.Color;
 
-public class UpNextPiece extends piece {
+public class UpNextPiece extends Piece {
 
 	public UpNextPiece(GridPosition pos) {
 		super(pos);

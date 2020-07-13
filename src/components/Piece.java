@@ -1,4 +1,4 @@
-//This Class defines a single piece to be shown uniformly on the UI
+//This Class defines a single Piece to be shown uniformly on the UI
 package components;
 
 import javafx.animation.KeyFrame;
@@ -12,7 +12,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import tetrominos.AbstractShape;
 
-public class piece extends Pane implements Comparable<piece> {
+public class Piece extends Pane implements Comparable<Piece> {
 	private static int SIZE;
 	private GridPosition position;
 	private boolean p;
@@ -21,7 +21,7 @@ public class piece extends Pane implements Comparable<piece> {
 	private Rectangle rectangle;
 
 	//UI contructor
-	public piece(GridPosition pos, Color col) {
+	public Piece(GridPosition pos, Color col) {
 		super();
 		setMaxSize(SIZE,SIZE);
 		setMinSize(SIZE,SIZE);
@@ -38,12 +38,12 @@ public class piece extends Pane implements Comparable<piece> {
 		view.setFitWidth(SIZE);
 		this.getChildren().addAll(rectangle,view);
 	}
-	//create size of the piece
+	//create size of the Piece
 	public static void initPieceSize(int s) {
 		SIZE = s;
 	}
 
-	public piece(GridPosition pos) {
+	public Piece(GridPosition pos) {
 		this(pos, Color.BLACK);
 	}
 	//set position for pieces
@@ -69,7 +69,7 @@ public class piece extends Pane implements Comparable<piece> {
 	}
 
 	@Override
-	public int compareTo(piece b) {
+	public int compareTo(Piece b) {
 		if (position.getX() > b.position.getX())
 			return 1;
 		else if (position.getX() < b.position.getX())

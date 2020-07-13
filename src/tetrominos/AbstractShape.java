@@ -3,18 +3,18 @@ package tetrominos;
 
 import java.util.ArrayList;
 
-import components.piece;
+import components.Piece;
 import components.GamePanel;
 import components.GridPosition;
 import javafx.scene.paint.Color;
 
 public abstract class AbstractShape {
 	//Abstract shapes have 4 Blocks
-	private piece one, two, three, four;
+	private Piece one, two, three, four;
 	//Abstract shapes have a GridPosition with offsets
 	private GridPosition[] offSets = new GridPosition[4];
 	//Array list of all 4 Blocks to make a shape
-	private ArrayList<piece> blocks = new ArrayList<piece>();
+	private ArrayList<Piece> blocks = new ArrayList<Piece>();
 	//x, y position on the grid
 	private GridPosition gridPos;
 
@@ -36,12 +36,12 @@ public abstract class AbstractShape {
 	public GridPosition getPosition() {
 		return gridPos;
 	}
-	public ArrayList<piece> getBlocks() {
+	public ArrayList<Piece> getBlocks() {
 		return blocks;
 	}
-	public ArrayList<piece> getBlockArray() {
-		ArrayList<piece> result = new ArrayList<piece>();
-		for (piece b : this.getBlocks()) {
+	public ArrayList<Piece> getBlockArray() {
+		ArrayList<Piece> result = new ArrayList<Piece>();
+		for (Piece b : this.getBlocks()) {
 			b.setP(true);
 		}
 		this.getBlocks().forEach(block1 -> {
@@ -58,9 +58,9 @@ public abstract class AbstractShape {
 		});
 		return result;
 	}
-	public ArrayList<piece> getLeft() {
-		ArrayList<piece> result = new ArrayList<piece>();
-		for (piece b : this.getBlocks()) {
+	public ArrayList<Piece> getLeft() {
+		ArrayList<Piece> result = new ArrayList<Piece>();
+		for (Piece b : this.getBlocks()) {
 			b.setP(true);
 		}
 		this.getBlocks().forEach(block1 -> {
@@ -77,9 +77,9 @@ public abstract class AbstractShape {
 		});
 		return result;
 	}
-	public ArrayList<piece> getBottomRow() {
-		ArrayList<piece> result = new ArrayList<piece>();
-		for (piece b : this.getBlocks()) {
+	public ArrayList<Piece> getBottomRow() {
+		ArrayList<Piece> result = new ArrayList<Piece>();
+		for (Piece b : this.getBlocks()) {
 			b.setP(true);
 		}
 		this.getBlocks().forEach(block1 -> {
@@ -100,8 +100,8 @@ public abstract class AbstractShape {
 	//Setter for grid position
 	public abstract void setPosition(GridPosition pos);
 	//Adds four blocks to create a shape
-	void addBlocksToShape(piece... blocks) {
-		for (piece b : blocks) {
+	void addBlocksToShape(Piece... blocks) {
+		for (Piece b : blocks) {
 			this.blocks.add(b);
 		}
 	}
@@ -109,12 +109,12 @@ public abstract class AbstractShape {
 	public abstract void Rotate();
 	//Unrotate shape
 	public abstract ArrayList<GridPosition> unRotate();
-	//Can fall? method to make sure piece can go down one x unit
+	//Can fall? method to make sure Piece can go down one x unit
 	public boolean canFall(GamePanel f) {
 		return f.canFall(this);
 	}
 	//returns true for any space, out of four, that contains a block
-	public boolean contains(piece block) {
+	public boolean contains(Piece block) {
 		return block==one||block==two||block==three||block==four;
 	}
 	//Copy the shape to the UpNextShape class
@@ -123,19 +123,19 @@ public abstract class AbstractShape {
 		return s;
 	}
 	//getters and setters for encapsulation
-	public piece getOne() {
+	public Piece getOne() {
 		return one;
 	}
 
-	public piece getTwo() {
+	public Piece getTwo() {
 		return two;
 	}
 
-	public piece getThree() {
+	public Piece getThree() {
 		return three;
 	}
 
-	public piece getFour() {
+	public Piece getFour() {
 		return four;
 	}
 
@@ -143,19 +143,19 @@ public abstract class AbstractShape {
 		return gridPos;
 	}
 
-	public void setOne(piece one) {
+	public void setOne(Piece one) {
 		this.one = one;
 	}
 
-	public void setTwo(piece two) {
+	public void setTwo(Piece two) {
 		this.two = two;
 	}
 
-	public void setThree(piece three) {
+	public void setThree(Piece three) {
 		this.three = three;
 	}
 
-	public void setFour(piece four) {
+	public void setFour(Piece four) {
 		this.four = four;
 	}
 
@@ -163,7 +163,7 @@ public abstract class AbstractShape {
 		this.offSets = offSets;
 	}
 
-	public void setBlocks(ArrayList<piece> blocks) {
+	public void setBlocks(ArrayList<Piece> blocks) {
 		this.blocks = blocks;
 	}
 

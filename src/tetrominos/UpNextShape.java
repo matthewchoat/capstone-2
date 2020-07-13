@@ -3,7 +3,7 @@ package tetrominos;
 
 import java.util.ArrayList;
 
-import components.piece;
+import components.Piece;
 import components.UpNextPiece;
 
 public class UpNextShape {
@@ -73,8 +73,8 @@ public class UpNextShape {
 				maxY = b.getPosition().getY();
 			}
 		});
-		height = (int) ((maxY - minY) * piece.getSIZE());
-		width = (int) ((maxX - minX) * piece.getSIZE());
+		height = (int) ((maxY - minY) * Piece.getSIZE());
+		width = (int) ((maxX - minX) * Piece.getSIZE());
 		Size res = new Size(width, height);
 		return res;
 	}

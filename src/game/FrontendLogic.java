@@ -28,7 +28,7 @@ public class FrontendLogic {
   }
 
   // This Lambda function streams a list of 50 abstract shape strings, shuffles them, and returns as a joined string.
-  // This function was necessary to write to reduce piece generation load times during gameplay by setting up 50 shapes at once instead of having to generate a new shape after every turn.
+  // This function was necessary to write to reduce Piece generation load times during gameplay by setting up 50 shapes at once instead of having to generate a new shape after every turn.
   Function<String[], String> shuffleLambda = elements -> {
     return Stream.iterate(Arrays.asList(elements), list -> {
       Collections.shuffle(list = new ArrayList<>(list));
@@ -158,7 +158,7 @@ public class FrontendLogic {
     }
   }
 
-  //Snap piece down to the bottom row instantly, check if pieces would spill over the game panel (game over condition) and check for removable lines
+  //Snap Piece down to the bottom row instantly, check if pieces would spill over the game panel (game over condition) and check for removable lines
   void hardDropLogic() {
     GamePanel gPanel = currentGame.getGamePanel();
     if (gPanel.canFall(currentGame.getAbsShape()) && !currentGame.isPaused()) {
