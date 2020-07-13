@@ -4,6 +4,8 @@ Place the instructions for how to play your game in this file.  The instructions
 
 Welcome to the Treetris experience:
 
+<a href="https://treetris.netlify.app/">https://treetris.netlify.app/</a>
+
 Click the Start button to begin the game. Use the Arrow keys (Up, Left, Down, & Right) to move and rotate the falling blocks. Press the Spacebar to drop a piece to the bottom instantly.
 
 Your goal is to clear full rows of wood blocks. Don't let the blocks stack too high or it's game over! 
