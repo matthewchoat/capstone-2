@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 import static javafx.scene.paint.Color.*;
 
 public class FrontendLogic {
-  private static String randTetrimino = "";
+  private String randTetrimino = "";
   private GameUI currentGame;
   public FrontendLogic(GameUI currentGame) {
     this.currentGame = currentGame;

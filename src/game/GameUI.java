@@ -72,7 +72,7 @@ public class GameUI extends Application {
 	public void start(Stage stage) {
 
 		//initializing buttons, board, sound, shuffled pieces, and piece colors
-		Button.init(SCREEN_HEIGHT);
+		Button.initBtn(SCREEN_HEIGHT);
 		stageDisplay = stage;
 		board = new Scoreboard();
 		board.init();
@@ -84,8 +84,8 @@ public class GameUI extends Application {
 		logicUI.initColors(colors);
 
 		//initializing piece and creating game panel
-		Block.init(FIELD_WIDTH / 10);
-		gamePanel = new GamePanel(Block.SIZE*10, Block.SIZE*20, SCENE_HEIGHT);
+		Block.initBlockSize(FIELD_WIDTH / 10);
+		gamePanel = new GamePanel(Block.getSIZE()*10, Block.getSIZE()*20, SCENE_HEIGHT);
 
 		//creating main HorizontalBox for UI and adding accompanying Scene
 		HBox mainUI = new HBox(SCREEN_WIDTH * 0.03);
@@ -98,7 +98,7 @@ public class GameUI extends Application {
 		//creating new Horizontal box for my Next tetrimino preview panel
 		HBox upNextBox = new HBox(2);
 		upNextBox.setAlignment(Pos.CENTER);
-		upNext = new UpNextPanel(Block.SIZE * 5, Block.SIZE * 5);
+		upNext = new UpNextPanel(Block.getSIZE() * 5, Block.getSIZE() * 5);
 		upNextBox.getChildren().addAll(upNext);
 
 		//creating new Horizontal box for the Game Title

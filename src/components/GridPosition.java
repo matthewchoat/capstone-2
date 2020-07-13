@@ -1,3 +1,4 @@
+//This class is used to find where a piece is on the GamePanel Grid
 package components;
 
 public class GridPosition {

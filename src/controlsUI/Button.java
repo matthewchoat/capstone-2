@@ -1,3 +1,4 @@
+//Defines button size and style for all UI buttons
 package controlsUI;
 
 import javafx.geometry.Insets;
@@ -54,7 +55,7 @@ public class Button extends javafx.scene.control.Button {
 		setCursor(Cursor.HAND);
 	}
 
-	public static void init(int s) {
+	public static void initBtn(int s) {
 		SCREEN_HEIGHT = s;
 		shad.setHeight(30);
 		shad.setWidth(30);

@@ -15,17 +15,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class AudioController {
-	int fp;
-	double globalVol = 100, soundvolume = 100, musicVol = 100;
-	boolean musicEnabled = true, soundEnabled = true, paused=true;
-	AudioInputStream line1, line2, line3, line4, fallen, play, pause, gameOver, spin, move, gameMusic, menuMusic,SelectedMusic;
-	Clip lines1, lines2, lines3, lines4, fallens, plays, pauses, loses, spins, moves, musics;
-	Thread audioThread;
+	private int fp;
+	private double globalVol = 100, soundvolume = 100, musicVol = 100;
+	private boolean musicEnabled = true, soundEnabled = true, paused=true;
+	private AudioInputStream line1, line2, line3, line4, fallen, play, pause, gameOver, spin, move, gameMusic, menuMusic,SelectedMusic;
+	private Clip lines1, lines2, lines3, lines4, fallens, plays, pauses, loses, spins, moves, musics;
 
-
-	boolean worked = false;
-	String menuMusicSound;
-	String gameMusicSound;
+	private boolean worked = false;
+	private String menuMusicSound;
+	private String gameMusicSound;
 	public AudioController(String dbase) {
 		//attempting to import all sound files
 		String documentBase = "/"; /// FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -238,4 +236,5 @@ public class AudioController {
 			musics.start();
 		}
 	}
+
 }

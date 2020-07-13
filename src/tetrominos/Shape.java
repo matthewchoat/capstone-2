@@ -1,3 +1,4 @@
+//This is my general Shape class that extends AbstractShape. Used for advanced Rotation methods.
 package tetrominos;
 
 import java.util.ArrayList;
@@ -11,21 +12,21 @@ public abstract class Shape extends AbstractShape {
 	}
 
 	public void Rotate() {
-		blocks.forEach(block -> {
-			offSets[blocks.indexOf(block)] = block.getPosition().sub(gridPos);
+		getBlocks().forEach(block -> {
+			getOffSets()[getBlocks().indexOf(block)] = block.getPosition().sub(getGridPos());
 		});
 		for (int i = 0; i < 4; i++) {
-			offSets[i] = new GridPosition(offSets[i].getY() - 1, -offSets[i].getX() + 1);
+			getOffSets()[i] = new GridPosition(getOffSets()[i].getY() - 1, -getOffSets()[i].getX() + 1);
 		}
-		blocks.forEach(b -> {
-			b.setPosition(offSets[blocks.indexOf(b)].add(gridPos));
+		getBlocks().forEach(b -> {
+			b.setPosition(getOffSets()[getBlocks().indexOf(b)].add(getGridPos()));
 		});
 	}
 
 	public ArrayList<GridPosition> unRotate() {
 		ArrayList<GridPosition> result = new ArrayList<GridPosition>();
 		for (int i = 0; i < 4; i++) {
-			result.add(new GridPosition(offSets[i].getY() - 1, -offSets[i].getX() + 1).add(gridPos));
+			result.add(new GridPosition(getOffSets()[i].getY() - 1, -getOffSets()[i].getX() + 1).add(getGridPos()));
 		}
 		return result;
 	}

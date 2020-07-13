@@ -11,8 +11,8 @@ public class UpNextBlock extends Block {
 	
 	@Override
 	public void setPosition(GridPosition pos) {
-		setTranslateX(pos.getX() * SIZE + 2);
-		setTranslateY(pos.getY() * SIZE + 2);
-		position = pos;
+		setTranslateX(pos.getX() * getSIZE() + 2);
+		setTranslateY(pos.getY() * getSIZE() + 2);
+		GridPosition position = pos;
 	}
 }

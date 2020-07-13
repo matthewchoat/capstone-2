@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 import tetrominos.UpNextShape;
 
 public class UpNextPanel extends StackPane {
-	int width, height;
+	private int width, height;
 
 	public UpNextPanel(int h, int w) {
 		setAlignment(Pos.CENTER);

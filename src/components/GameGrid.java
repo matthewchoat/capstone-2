@@ -1,3 +1,4 @@
+//This class sets up the mesh grid that overlays the GamePanel
 package components;
 
 import javafx.scene.layout.Pane;
@@ -5,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class GameGrid extends Pane {
-	public GameGrid(int w, int h, Color col) {
+	 GameGrid(int w, int h, Color col) {
 		for (int i = 0; i <= w; i += w / 10) {
 			Line line = new Line();
 			line.setStartX(i);

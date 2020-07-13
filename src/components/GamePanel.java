@@ -286,9 +286,9 @@ public class GamePanel extends Pane {
 		Collections.sort(removables);
 		j = 4;
 		Timeline line = new Timeline(new KeyFrame(Duration.seconds(.02),
-				new KeyValue(removables.get(j).translateYProperty(), removables.get(j).getTranslateY() + Block.SIZE),
+				new KeyValue(removables.get(j).translateYProperty(), removables.get(j).getTranslateY() + Block.getSIZE()),
 				new KeyValue(removables.get(9 - j).translateYProperty(),
-						removables.get(9 - j).getTranslateY() + Block.SIZE)));
+						removables.get(9 - j).getTranslateY() + Block.getSIZE())));
 		line.setOnFinished(e -> {
 			if (j >= 0) {
 				blocks.remove(removables.get(j));
@@ -301,9 +301,9 @@ public class GamePanel extends Pane {
 					line.getKeyFrames()
 							.setAll(new KeyFrame(Duration.seconds(.02),
 									new KeyValue(removables.get(j).translateYProperty(),
-											removables.get(j).getTranslateY() + Block.SIZE),
+											removables.get(j).getTranslateY() + Block.getSIZE()),
 									new KeyValue(removables.get(9 - j).translateYProperty(),
-											removables.get(9 - j).getTranslateY() + Block.SIZE)));
+											removables.get(9 - j).getTranslateY() + Block.getSIZE())));
 				} else {
 					j--;
 				}
@@ -320,7 +320,7 @@ public class GamePanel extends Pane {
 				blocks.forEach(block -> {
 					if (!block.isFrom(selected) && block.getPosition().getY() < i) {
 						count--;
-						values[count] = new KeyValue(block.translateYProperty(), block.getTranslateY() + Block.SIZE);
+						values[count] = new KeyValue(block.translateYProperty(), block.getTranslateY() + Block.getSIZE());
 					}
 				});
 				Timeline shiftDown = new Timeline(new KeyFrame(Duration.seconds(.2), values));

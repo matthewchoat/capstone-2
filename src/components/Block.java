@@ -1,4 +1,4 @@
-
+//This Class defines a single block, which is used to create a shape using 4 blocks
 package components;
 
 import javafx.animation.KeyFrame;
@@ -13,13 +13,14 @@ import javafx.util.Duration;
 import tetrominos.AbstractShape;
 
 public class Block extends Pane implements Comparable<Block> {
-	public static int SIZE;
-	public GridPosition position;
-	public boolean b;
+	private static int SIZE;
+	private GridPosition position;
+	private boolean b;
 	private static double gameSpeed = 0.06;
-	boolean brust = false;
-	Rectangle rec;
-	public static void init(int s) {
+	private boolean blockLoaded = false;
+	private Rectangle rec;
+
+	public static void initBlockSize(int s) {
 		SIZE = s;
 	}
 
@@ -46,7 +47,7 @@ public class Block extends Pane implements Comparable<Block> {
 	}
 
 	public void setPosition(GridPosition pos) {
-		if(brust) {
+		if(blockLoaded) {
 			setTranslateX(pos.getX() * SIZE);
 			setTranslateY(pos.getY() * SIZE);
 		}else {
@@ -87,5 +88,32 @@ public class Block extends Pane implements Comparable<Block> {
 	public boolean isFrom(AbstractShape s) {
 		return s.contains(this);
 	}
+
+	public static int getSIZE() {
+		return SIZE;
+	}
+
+	public boolean isB() {
+		return b;
+	}
+
+	public static double getGameSpeed() {
+		return gameSpeed;
+	}
+
+	public boolean isBlockLoaded() {
+		return blockLoaded;
+	}
+
+	public Rectangle getRec() {
+		return rec;
+	}
+
+	public boolean getB() { return b; }
+
+	public void setB(boolean b) {
+		this.b = b;
+	}
+
 
 }

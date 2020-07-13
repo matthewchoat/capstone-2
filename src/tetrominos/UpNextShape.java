@@ -15,10 +15,10 @@ public class UpNextShape {
 	boolean hr, vr;
 
 	public UpNextShape(AbstractShape s) {
-		UpNextBlock one = new UpNextBlock(s.offSets[0]);
-		UpNextBlock two = new UpNextBlock(s.offSets[1]);
-		UpNextBlock three = new UpNextBlock(s.offSets[2]);
-		UpNextBlock four = new UpNextBlock(s.offSets[3]);
+		UpNextBlock one = new UpNextBlock(s.getOffSets()[0]);
+		UpNextBlock two = new UpNextBlock(s.getOffSets()[1]);
+		UpNextBlock three = new UpNextBlock(s.getOffSets()[2]);
+		UpNextBlock four = new UpNextBlock(s.getOffSets()[3]);
 		blocks.add(one);
 		blocks.add(two);
 		blocks.add(three);
@@ -73,8 +73,8 @@ public class UpNextShape {
 				maxY = b.getPosition().getY();
 			}
 		});
-		height = (int) ((maxY - minY) * Block.SIZE);
-		width = (int) ((maxX - minX) * Block.SIZE);
+		height = (int) ((maxY - minY) * Block.getSIZE());
+		width = (int) ((maxX - minX) * Block.getSIZE());
 		Size res = new Size(width, height);
 		return res;
 	}

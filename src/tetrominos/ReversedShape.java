@@ -1,3 +1,4 @@
+//This class is similar to the Class "Shape", but is for shapes that are just reversed version of other shapes (like th J and Z tetrominos)
 package tetrominos;
 
 import java.util.ArrayList;
@@ -11,20 +12,20 @@ public abstract class ReversedShape extends AbstractShape {
 	public ArrayList<GridPosition> unRotate() {
 		ArrayList<GridPosition> res = new ArrayList<GridPosition>();
 		for (int i = 0; i < 4; i++) {
-			res.add(new GridPosition(offSets[i].getY() - 2, -offSets[i].getX() + 2).add(gridPos));
+			res.add(new GridPosition(getOffSets()[i].getY() - 2, -getOffSets()[i].getX() + 2).add(getGridPos()));
 		}
 		return res;
 	}
 
 	public void Rotate() {
-		blocks.forEach(block -> {
-			offSets[blocks.indexOf(block)] = block.getPosition().sub(gridPos);
+		getBlocks().forEach(block -> {
+			getOffSets()[getBlocks().indexOf(block)] = block.getPosition().sub(getGridPos());
 		});
 		for (int i = 0; i < 4; i++) {
-			offSets[i] = new GridPosition(offSets[i].getY() - 2, -offSets[i].getX() + 2);
+			getOffSets()[i] = new GridPosition(getOffSets()[i].getY() - 2, -getOffSets()[i].getX() + 2);
 		}
-		blocks.forEach(b -> {
-			b.setPosition(offSets[blocks.indexOf(b)].add(gridPos));
+		getBlocks().forEach(b -> {
+			b.setPosition(getOffSets()[getBlocks().indexOf(b)].add(getGridPos()));
 		});
 	}
 }

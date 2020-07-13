@@ -10,13 +10,13 @@ import javafx.scene.paint.Color;
 
 public abstract class AbstractShape {
 	//Abstract shapes have 4 Blocks
-	Block one, two, three, four;
+	private Block one, two, three, four;
 	//Abstract shapes have a GridPosition with offsets
-	GridPosition[] offSets = new GridPosition[4];
+	private GridPosition[] offSets = new GridPosition[4];
 	//Array list of all 4 Blocks to make a shape
-	ArrayList<Block> blocks = new ArrayList<Block>();
+	private ArrayList<Block> blocks = new ArrayList<Block>();
 	//x, y position on the grid
-	GridPosition gridPos;
+	private GridPosition gridPos;
 
 	//constructor
 	public AbstractShape(GridPosition gridPos) {
@@ -42,17 +42,17 @@ public abstract class AbstractShape {
 	public ArrayList<Block> getBlockArray() {
 		ArrayList<Block> result = new ArrayList<Block>();
 		for (Block b : this.getBlocks()) {
-			b.b = true;
+			b.setB(true);
 		}
 		this.getBlocks().forEach(block1 -> {
 			this.getBlocks().forEach(block2 -> {
 				if (block2.getPosition().isRight(block1.getPosition())) {
-					block1.b = false;
+					block1.setB(false);
 				}
 			});
 		});
 		this.getBlocks().forEach(block -> {
-			if (block.b) {
+			if (block.getB()) {
 				result.add(block);
 			}
 		});
@@ -61,17 +61,17 @@ public abstract class AbstractShape {
 	public ArrayList<Block> getLeft() {
 		ArrayList<Block> result = new ArrayList<Block>();
 		for (Block b : this.getBlocks()) {
-			b.b = true;
+			b.setB(true);
 		}
 		this.getBlocks().forEach(block1 -> {
 			this.getBlocks().forEach(block2 -> {
 				if (block2.getPosition().isLeft(block1.getPosition())) {
-					block1.b = false;
+					block1.setB(false);
 				}
 			});
 		});
 		this.getBlocks().forEach(block -> {
-			if (block.b) {
+			if (block.getB()) {
 				result.add(block);
 			}
 		});
@@ -80,17 +80,17 @@ public abstract class AbstractShape {
 	public ArrayList<Block> getBottomRow() {
 		ArrayList<Block> result = new ArrayList<Block>();
 		for (Block b : this.getBlocks()) {
-			b.b = true;
+			b.setB(true);
 		}
 		this.getBlocks().forEach(block1 -> {
 			this.getBlocks().forEach(block2 -> {
 				if (block2.getPosition().isUnder(block1.getPosition())) {
-					block1.b = false;
+					block1.setB(false);
 				}
 			});
 		});
 		this.getBlocks().forEach(block -> {
-			if (block.b) {
+			if (block.getB()) {
 				result.add(block);
 			}
 		});
@@ -121,5 +121,53 @@ public abstract class AbstractShape {
 	public UpNextShape moveToUpNext() {
 		UpNextShape s = new UpNextShape(this);
 		return s;
+	}
+	//getters and setters for encapsulation
+	public Block getOne() {
+		return one;
+	}
+
+	public Block getTwo() {
+		return two;
+	}
+
+	public Block getThree() {
+		return three;
+	}
+
+	public Block getFour() {
+		return four;
+	}
+
+	public GridPosition getGridPos() {
+		return gridPos;
+	}
+
+	public void setOne(Block one) {
+		this.one = one;
+	}
+
+	public void setTwo(Block two) {
+		this.two = two;
+	}
+
+	public void setThree(Block three) {
+		this.three = three;
+	}
+
+	public void setFour(Block four) {
+		this.four = four;
+	}
+
+	public void setOffSets(GridPosition[] offSets) {
+		this.offSets = offSets;
+	}
+
+	public void setBlocks(ArrayList<Block> blocks) {
+		this.blocks = blocks;
+	}
+
+	public void setGridPos(GridPosition gridPos) {
+		this.gridPos = gridPos;
 	}
 }
