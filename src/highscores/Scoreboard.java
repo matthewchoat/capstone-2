@@ -21,7 +21,7 @@ public class Scoreboard {
 	private boolean added;
 	private boolean full;
 	private Label title;
-	private Image boardBG = new Image("media/bgAlt.jpg");
+	private Image boardBG = new Image("/media/bgAlt.jpg");
 
 	public boolean highScoreCheck(int v) {
 		if (FileHandler.getScores().size() < 5) {

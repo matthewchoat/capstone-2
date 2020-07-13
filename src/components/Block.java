@@ -35,7 +35,7 @@ public class Block extends Pane implements Comparable<Block> {
 		rec.setFill(col);
 		position = pos;
 		rec.setStroke(Color.BLACK);
-		ImageView view = new ImageView(new Image("media/woodBlock.png"));
+		ImageView view = new ImageView(new Image("/media/woodBlock.png"));
 		view.setFitHeight(SIZE);
 		view.setFitWidth(SIZE);
 		this.getChildren().addAll(rec,view);

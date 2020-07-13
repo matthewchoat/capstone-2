@@ -51,7 +51,7 @@ public class GameUI extends Application {
 	private Scoreboard board;
 	private GamePanel gamePanel;
 	private Stage stageDisplay;
-	private Image windowBG = new Image("media/pineoak.jpg");
+	private Image windowBG = new Image("/media/pineoak.jpg");
 	private Color fallen = SADDLEBROWN;
 	private Label points, instructions, title;
 	//initializing package-specific variables
@@ -70,12 +70,13 @@ public class GameUI extends Application {
 	//starting the game thread, rendering all elements of the UI.
 	@Override
 	public void start(Stage stage) {
+
 		//initializing buttons, board, sound, shuffled pieces, and piece colors
 		Button.init(SCREEN_HEIGHT);
 		stageDisplay = stage;
 		board = new Scoreboard();
 		board.init();
-		sound = new AudioController();
+		sound = new AudioController(this.getHostServices().getDocumentBase());
 		soundWorks = sound.audioWorks();
 
 		//shuffling pieces and applying colors

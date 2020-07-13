@@ -1,8 +1,8 @@
 //This class imports sound files and adds them to the audio stream.
 package components;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -21,35 +21,41 @@ public class AudioController {
 	AudioInputStream line1, line2, line3, line4, fallen, play, pause, gameOver, spin, move, gameMusic, menuMusic,SelectedMusic;
 	Clip lines1, lines2, lines3, lines4, fallens, plays, pauses, loses, spins, moves, musics;
 	Thread audioThread;
-	static String lineOne = "src/media/LineClear1.wav";
-	static String lineTwo = "src/media/LineClear2.wav";
-	static String lineThree = "src/media/LineClear3.wav";
-	static String lineFour = "src/media/LineClear4.wav";
-	static String fallenSound = "src/media/fallen.wav";
-	static String playSound = "src/media/play.wav";
-	static String pauseSound = "src/media/pause.wav";
-	static String gameOverSound = "src/media/gameOver.wav";
-	static String spinSound = "src/media/spin.wav";
-	static String moveSound = "src/media/move.wav";
-	static String gameMusicSound = "src/media/gameMusic.wav";
-	static String menuMusicSound = "src/media/menuMusic.wav";
+
 
 	boolean worked = false;
-	public AudioController() {
+	String menuMusicSound;
+	String gameMusicSound;
+	public AudioController(String dbase) {
 		//attempting to import all sound files
+		String documentBase = "/"; /// FileSystems.getDefault().getPath("").toAbsolutePath();
+		String lineOne = (documentBase + "media/LineClear1.wav");
+		String lineTwo = (documentBase + "media/LineClear2.wav");
+		String lineThree = (documentBase + "media/LineClear3.wav");
+		String lineFour = (documentBase + "media/LineClear4.wav");
+		String fallenSound = (documentBase + "media/fallen.wav");
+		String playSound = (documentBase + "media/play.wav");
+		String pauseSound = (documentBase + "media/pause.wav");
+		String gameOverSound = (documentBase + "media/gameOver.wav");
+		String spinSound = (documentBase + "media/spin.wav");
+		String moveSound = (documentBase + "media/move.wav");
+		this.gameMusicSound = (documentBase + "media/gameMusic.wav");
+		this.menuMusicSound = (documentBase + "media/menuMusic.wav");
+
 		try {
-			line1 = AudioSystem.getAudioInputStream(new File(lineOne));
-			line2 = AudioSystem.getAudioInputStream(new File(lineTwo));
-			line3 = AudioSystem.getAudioInputStream(new File(lineThree));
-			line4 = AudioSystem.getAudioInputStream(new File(lineFour));
-			fallen = AudioSystem.getAudioInputStream(new File(fallenSound));
-			play = AudioSystem.getAudioInputStream(new File(playSound));
-			pause = AudioSystem.getAudioInputStream(new File(pauseSound));
-			gameOver = AudioSystem.getAudioInputStream(new File(gameOverSound));
-			spin = AudioSystem.getAudioInputStream(new File(spinSound));
-			move = AudioSystem.getAudioInputStream(new File(moveSound));
-			gameMusic = AudioSystem.getAudioInputStream(new File(gameMusicSound));
-			menuMusic = AudioSystem.getAudioInputStream(new File(menuMusicSound));
+			InputStream is = getClass().getResource(lineOne).openStream();
+			line1 = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
+			line2 = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(lineTwo).openStream()));
+			line3 = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(lineThree).openStream()));
+			line4 = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(lineFour).openStream()));
+			fallen = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(fallenSound).openStream()));
+			play = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(playSound).openStream()));
+			pause = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(pauseSound).openStream()));
+			gameOver = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(gameOverSound).openStream()));
+			spin = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(spinSound).openStream()));
+			move = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(moveSound).openStream()));
+			gameMusic = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(gameMusicSound).openStream()));
+			menuMusic = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(menuMusicSound).openStream()));
 			musics = AudioSystem.getClip();
 			SelectedMusic = menuMusic;
 			musics.open(SelectedMusic);
@@ -207,7 +213,7 @@ public class AudioController {
 		musics.close();
 		try {
 			musics = AudioSystem.getClip();
-			menuMusic = AudioSystem.getAudioInputStream(new File(menuMusicSound));
+			menuMusic = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(menuMusicSound).openStream()));
 			musics.open(menuMusic);
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
@@ -222,7 +228,7 @@ public class AudioController {
 		musics.close();
 		try {
 			musics = AudioSystem.getClip();
-			gameMusic = AudioSystem.getAudioInputStream(new File(gameMusicSound));
+			gameMusic = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResource(gameMusicSound).openStream()));
 			musics.open(gameMusic);
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();

@@ -80,7 +80,7 @@ public class GamePanel extends Pane {
 		border.setTranslateX(-10);
 		border.setTranslateY(-5);
 		border.setStyle("-fx-background-color: saddlebrown");
-		ImageView view = new ImageView(new Image("media/background.jpg"));
+		ImageView view = new ImageView(new Image("/media/background.jpg"));
 		ColorAdjust co = new ColorAdjust();
 		co.setBrightness(0.3);
 		view.setEffect(co);
