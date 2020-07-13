@@ -2,9 +2,9 @@ package components;
 
 import javafx.scene.paint.Color;
 
-public class UpNextBlock extends Block {
+public class UpNextPiece extends piece {
 
-	public UpNextBlock(GridPosition pos) {
+	public UpNextPiece(GridPosition pos) {
 		super(pos);
 		setFill(Color.SADDLEBROWN);
 	}

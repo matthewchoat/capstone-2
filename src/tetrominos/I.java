@@ -2,7 +2,7 @@ package tetrominos;
 
 import java.util.ArrayList;
 
-import components.Block;
+import components.piece;
 import components.GridPosition;
 
 public class I extends Shape {
@@ -15,10 +15,10 @@ public class I extends Shape {
 		getOffSets()[2] = getOffSets()[1].down();
 		getOffSets()[3] = getOffSets()[2].down();
 
-		setOne(new Block(pos.add(getOffSets()[0])));
-		setTwo(new Block(pos.add(getOffSets()[1])));
-		setThree(new Block(pos.add(getOffSets()[2])));
-		setFour(new Block(pos.add(getOffSets()[3])));
+		setOne(new piece(pos.add(getOffSets()[0])));
+		setTwo(new piece(pos.add(getOffSets()[1])));
+		setThree(new piece(pos.add(getOffSets()[2])));
+		setFour(new piece(pos.add(getOffSets()[3])));
 		addBlocksToShape(getOne(), getTwo(), getThree(), getFour());
 	}
 

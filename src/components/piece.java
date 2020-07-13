@@ -1,4 +1,4 @@
-//This Class defines a single block, which is used to create a shape using 4 blocks
+//This Class defines a single piece to be shown uniformly on the UI
 package components;
 
 import javafx.animation.KeyFrame;
@@ -12,40 +12,41 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import tetrominos.AbstractShape;
 
-public class Block extends Pane implements Comparable<Block> {
+public class piece extends Pane implements Comparable<piece> {
 	private static int SIZE;
 	private GridPosition position;
-	private boolean b;
+	private boolean p;
 	private static double gameSpeed = 0.06;
 	private boolean blockLoaded = false;
-	private Rectangle rec;
+	private Rectangle rectangle;
 
-	public static void initBlockSize(int s) {
-		SIZE = s;
-	}
-
-	public Block(GridPosition pos, Color col) {
+	//UI contructor
+	public piece(GridPosition pos, Color col) {
 		super();
 		setMaxSize(SIZE,SIZE);
 		setMinSize(SIZE,SIZE);
 		setTranslateX(pos.getX() * SIZE);
 		setTranslateY(pos.getY() * SIZE);
-		rec = new Rectangle(SIZE-4,SIZE-4);
-		rec.setTranslateX(2);
-		rec.setTranslateY(2);
-		rec.setFill(col);
+		rectangle = new Rectangle(SIZE-4,SIZE-4);
+		rectangle.setTranslateX(2);
+		rectangle.setTranslateY(2);
+		rectangle.setFill(col);
 		position = pos;
-		rec.setStroke(Color.BLACK);
+		rectangle.setStroke(Color.BLACK);
 		ImageView view = new ImageView(new Image("/media/woodBlock.png"));
 		view.setFitHeight(SIZE);
 		view.setFitWidth(SIZE);
-		this.getChildren().addAll(rec,view);
+		this.getChildren().addAll(rectangle,view);
+	}
+	//create size of the piece
+	public static void initPieceSize(int s) {
+		SIZE = s;
 	}
 
-	public Block(GridPosition pos) {
+	public piece(GridPosition pos) {
 		this(pos, Color.BLACK);
 	}
-
+	//set position for pieces
 	public void setPosition(GridPosition pos) {
 		if(blockLoaded) {
 			setTranslateX(pos.getX() * SIZE);
@@ -56,10 +57,9 @@ public class Block extends Pane implements Comparable<Block> {
 							new KeyValue(translateYProperty(), pos.getY() * SIZE)));
 			move.playFromStart();
 		}
-		
 		this.position = pos;
 	}
-
+	//get position on grid
 	public GridPosition getPosition() {
 		return position;
 	}
@@ -69,7 +69,7 @@ public class Block extends Pane implements Comparable<Block> {
 	}
 
 	@Override
-	public int compareTo(Block b) {
+	public int compareTo(piece b) {
 		if (position.getX() > b.position.getX())
 			return 1;
 		else if (position.getX() < b.position.getX())
@@ -83,7 +83,7 @@ public class Block extends Pane implements Comparable<Block> {
 	}
 
 	public void setFill(Color col) {
-		rec.setFill(col);
+		rectangle.setFill(col);
 	}
 	public boolean isFrom(AbstractShape s) {
 		return s.contains(this);
@@ -93,8 +93,8 @@ public class Block extends Pane implements Comparable<Block> {
 		return SIZE;
 	}
 
-	public boolean isB() {
-		return b;
+	public boolean isP() {
+		return p;
 	}
 
 	public static double getGameSpeed() {
@@ -105,14 +105,14 @@ public class Block extends Pane implements Comparable<Block> {
 		return blockLoaded;
 	}
 
-	public Rectangle getRec() {
-		return rec;
+	public Rectangle getRectangle() {
+		return rectangle;
 	}
 
-	public boolean getB() { return b; }
+	public boolean getB() { return p; }
 
-	public void setB(boolean b) {
-		this.b = b;
+	public void setP(boolean p) {
+		this.p = p;
 	}
 
 }

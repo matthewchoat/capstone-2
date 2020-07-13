@@ -3,18 +3,18 @@ package tetrominos;
 
 import java.util.ArrayList;
 
-import components.Block;
+import components.piece;
 import components.GamePanel;
 import components.GridPosition;
 import javafx.scene.paint.Color;
 
 public abstract class AbstractShape {
 	//Abstract shapes have 4 Blocks
-	private Block one, two, three, four;
+	private piece one, two, three, four;
 	//Abstract shapes have a GridPosition with offsets
 	private GridPosition[] offSets = new GridPosition[4];
 	//Array list of all 4 Blocks to make a shape
-	private ArrayList<Block> blocks = new ArrayList<Block>();
+	private ArrayList<piece> blocks = new ArrayList<piece>();
 	//x, y position on the grid
 	private GridPosition gridPos;
 
@@ -36,18 +36,18 @@ public abstract class AbstractShape {
 	public GridPosition getPosition() {
 		return gridPos;
 	}
-	public ArrayList<Block> getBlocks() {
+	public ArrayList<piece> getBlocks() {
 		return blocks;
 	}
-	public ArrayList<Block> getBlockArray() {
-		ArrayList<Block> result = new ArrayList<Block>();
-		for (Block b : this.getBlocks()) {
-			b.setB(true);
+	public ArrayList<piece> getBlockArray() {
+		ArrayList<piece> result = new ArrayList<piece>();
+		for (piece b : this.getBlocks()) {
+			b.setP(true);
 		}
 		this.getBlocks().forEach(block1 -> {
 			this.getBlocks().forEach(block2 -> {
 				if (block2.getPosition().isRight(block1.getPosition())) {
-					block1.setB(false);
+					block1.setP(false);
 				}
 			});
 		});
@@ -58,15 +58,15 @@ public abstract class AbstractShape {
 		});
 		return result;
 	}
-	public ArrayList<Block> getLeft() {
-		ArrayList<Block> result = new ArrayList<Block>();
-		for (Block b : this.getBlocks()) {
-			b.setB(true);
+	public ArrayList<piece> getLeft() {
+		ArrayList<piece> result = new ArrayList<piece>();
+		for (piece b : this.getBlocks()) {
+			b.setP(true);
 		}
 		this.getBlocks().forEach(block1 -> {
 			this.getBlocks().forEach(block2 -> {
 				if (block2.getPosition().isLeft(block1.getPosition())) {
-					block1.setB(false);
+					block1.setP(false);
 				}
 			});
 		});
@@ -77,15 +77,15 @@ public abstract class AbstractShape {
 		});
 		return result;
 	}
-	public ArrayList<Block> getBottomRow() {
-		ArrayList<Block> result = new ArrayList<Block>();
-		for (Block b : this.getBlocks()) {
-			b.setB(true);
+	public ArrayList<piece> getBottomRow() {
+		ArrayList<piece> result = new ArrayList<piece>();
+		for (piece b : this.getBlocks()) {
+			b.setP(true);
 		}
 		this.getBlocks().forEach(block1 -> {
 			this.getBlocks().forEach(block2 -> {
 				if (block2.getPosition().isUnder(block1.getPosition())) {
-					block1.setB(false);
+					block1.setP(false);
 				}
 			});
 		});
@@ -100,8 +100,8 @@ public abstract class AbstractShape {
 	//Setter for grid position
 	public abstract void setPosition(GridPosition pos);
 	//Adds four blocks to create a shape
-	void addBlocksToShape(Block... blocks) {
-		for (Block b : blocks) {
+	void addBlocksToShape(piece... blocks) {
+		for (piece b : blocks) {
 			this.blocks.add(b);
 		}
 	}
@@ -114,7 +114,7 @@ public abstract class AbstractShape {
 		return f.canFall(this);
 	}
 	//returns true for any space, out of four, that contains a block
-	public boolean contains(Block block) {
+	public boolean contains(piece block) {
 		return block==one||block==two||block==three||block==four;
 	}
 	//Copy the shape to the UpNextShape class
@@ -123,19 +123,19 @@ public abstract class AbstractShape {
 		return s;
 	}
 	//getters and setters for encapsulation
-	public Block getOne() {
+	public piece getOne() {
 		return one;
 	}
 
-	public Block getTwo() {
+	public piece getTwo() {
 		return two;
 	}
 
-	public Block getThree() {
+	public piece getThree() {
 		return three;
 	}
 
-	public Block getFour() {
+	public piece getFour() {
 		return four;
 	}
 
@@ -143,19 +143,19 @@ public abstract class AbstractShape {
 		return gridPos;
 	}
 
-	public void setOne(Block one) {
+	public void setOne(piece one) {
 		this.one = one;
 	}
 
-	public void setTwo(Block two) {
+	public void setTwo(piece two) {
 		this.two = two;
 	}
 
-	public void setThree(Block three) {
+	public void setThree(piece three) {
 		this.three = three;
 	}
 
-	public void setFour(Block four) {
+	public void setFour(piece four) {
 		this.four = four;
 	}
 
@@ -163,7 +163,7 @@ public abstract class AbstractShape {
 		this.offSets = offSets;
 	}
 
-	public void setBlocks(ArrayList<Block> blocks) {
+	public void setBlocks(ArrayList<piece> blocks) {
 		this.blocks = blocks;
 	}
 

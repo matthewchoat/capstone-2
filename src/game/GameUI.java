@@ -30,7 +30,7 @@ import components.AudioController;
 
 //custom package imports
 import controlsUI.Button;
-import components.Block;
+import components.piece;
 import components.GamePanel;
 import components.GridPosition;
 import components.UpNextPanel;
@@ -77,8 +77,8 @@ public class GameUI extends Application {
 		sound = new AudioController(this.getHostServices().getDocumentBase());
 		soundWorks = sound.audioWorks();
 		//initializing block size and creating game panel
-		Block.initBlockSize(FIELD_WIDTH / 10);
-		gamePanel = new GamePanel(Block.getSIZE()*10, Block.getSIZE()*20, SCENE_HEIGHT);
+		piece.initPieceSize(FIELD_WIDTH / 10);
+		gamePanel = new GamePanel(piece.getSIZE()*10, piece.getSIZE()*20, SCENE_HEIGHT);
 		//creating main HorizontalBox for main UI and creating accompanying Scene
 		HBox mainUI = new HBox(SCREEN_WIDTH * 0.03);
 		mainUI.setAlignment(Pos.CENTER);
@@ -221,7 +221,7 @@ public class GameUI extends Application {
 		//creating new Horizontal box for my Next tetrimino preview panel
 		HBox upNextBox = new HBox(2);
 		upNextBox.setAlignment(Pos.CENTER);
-		upNext = new UpNextPanel(Block.getSIZE() * 5, Block.getSIZE() * 5);
+		upNext = new UpNextPanel(piece.getSIZE() * 5, piece.getSIZE() * 5);
 		upNextBox.getChildren().addAll(upNext);
 
 		//creating new Horizontal box for the Game Title

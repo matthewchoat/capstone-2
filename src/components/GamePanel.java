@@ -30,7 +30,7 @@ public class GamePanel extends Pane {
 	private int i = 0;
 	private boolean result[][] = new boolean[10][20];
 	private AbstractShape selected;
-	private ArrayList<Block> blocks = new ArrayList<Block>();
+	private ArrayList<piece> blocks = new ArrayList<piece>();
 	private boolean gameActive;
 	private GameGrid g;
 	private Pane border;
@@ -148,8 +148,8 @@ public class GamePanel extends Pane {
 			} else {
 				if (poss[i].getY() > 0 && result[poss[i].getX()][poss[i].getY()]) {
 					gameActive = false;
-					ArrayList<Block> blocks = s.getBlocks();
-					for (Block block : blocks) {
+					ArrayList<piece> blocks = s.getBlocks();
+					for (piece block : blocks) {
 						if (block.getPosition().equals(poss[i])) {
 							gameActive = true;
 						}
@@ -166,7 +166,7 @@ public class GamePanel extends Pane {
 	public boolean canFall(AbstractShape s) {
 		gameActive = true;
 		canMove();
-		for (Block b : s.getBlocks()) {
+		for (piece b : s.getBlocks()) {
 			if (b.getPosition().getY() == 19) {
 				gameActive = false;
 			}
@@ -187,7 +187,7 @@ public class GamePanel extends Pane {
 	public boolean canMoveLeft(AbstractShape s) {
 		gameActive = true;
 		canMove();
-		for (Block b : s.getBlocks()) {
+		for (piece b : s.getBlocks()) {
 			if (b.getPosition().getX() == 0) {
 				gameActive = false;
 			}
@@ -208,7 +208,7 @@ public class GamePanel extends Pane {
 	public boolean canMoveRight(AbstractShape s) {
 		gameActive = true;
 		canMove();
-		for (Block b : s.getBlocks()) {
+		for (piece b : s.getBlocks()) {
 			if (b.getPosition().getX() == 9) {
 				gameActive = false;
 			}
@@ -272,7 +272,7 @@ public class GamePanel extends Pane {
 	}
 //remove lines from the GamePanel
 	private void removeLine(int i) {
-		ArrayList<Block> removables = new ArrayList<Block>();
+		ArrayList<piece> removables = new ArrayList<piece>();
 		blocks.forEach(block -> {
 			if (block.getPosition().getY() == i) {
 				removables.add(block);
@@ -281,9 +281,9 @@ public class GamePanel extends Pane {
 		Collections.sort(removables);
 		toBeRemoved = 4;
 		Timeline line = new Timeline(new KeyFrame(Duration.seconds(.02),
-				new KeyValue(removables.get(toBeRemoved).translateYProperty(), removables.get(toBeRemoved).getTranslateY() + Block.getSIZE()),
+				new KeyValue(removables.get(toBeRemoved).translateYProperty(), removables.get(toBeRemoved).getTranslateY() + piece.getSIZE()),
 				new KeyValue(removables.get(9 - toBeRemoved).translateYProperty(),
-						removables.get(9 - toBeRemoved).getTranslateY() + Block.getSIZE())));
+						removables.get(9 - toBeRemoved).getTranslateY() + piece.getSIZE())));
 		line.setOnFinished(e -> {
 			if (toBeRemoved >= 0) {
 				blocks.remove(removables.get(toBeRemoved));
@@ -296,9 +296,9 @@ public class GamePanel extends Pane {
 					line.getKeyFrames()
 							.setAll(new KeyFrame(Duration.seconds(.02),
 									new KeyValue(removables.get(toBeRemoved).translateYProperty(),
-											removables.get(toBeRemoved).getTranslateY() + Block.getSIZE()),
+											removables.get(toBeRemoved).getTranslateY() + piece.getSIZE()),
 									new KeyValue(removables.get(9 - toBeRemoved).translateYProperty(),
-											removables.get(9 - toBeRemoved).getTranslateY() + Block.getSIZE())));
+											removables.get(9 - toBeRemoved).getTranslateY() + piece.getSIZE())));
 				} else {
 					toBeRemoved--;
 				}
@@ -314,7 +314,7 @@ public class GamePanel extends Pane {
 				blocks.forEach(block -> {
 					if (!block.isFrom(selected) && block.getPosition().getY() < i) {
 						count--;
-						values[count] = new KeyValue(block.translateYProperty(), block.getTranslateY() + Block.getSIZE());
+						values[count] = new KeyValue(block.translateYProperty(), block.getTranslateY() + piece.getSIZE());
 					}
 				});
 				Timeline shiftDown = new Timeline(new KeyFrame(Duration.seconds(.2), values));
@@ -389,6 +389,7 @@ public class GamePanel extends Pane {
 				result[i][j] = false;
 			}
 		}
+		//fade to back and reset new game panel
 		Timeline change = new Timeline(new KeyFrame(Duration.seconds(1),new KeyValue(blend.fillProperty(),Color.BLACK)));
 		change.playFromStart();
 		getChildren().addAll(border, g, pane, blend);
