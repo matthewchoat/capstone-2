@@ -28,24 +28,22 @@ public class FrontendLogic {
   }
 
   // This Lambda function streams a list of 50 abstract shape strings, shuffles them, and returns as a joined string.
-  // This function was necessary to write to reduce Piece generation load times during gameplay by setting up 50 shapes at once instead of having to generate a new shape after every turn.
+  // This function was necessary to write to reduce Piece generation load times during gameplay by loading
+  // 50 shapes at once instead of having to generate a new shape after every turn.
   Function<String[], String> shuffleLambda = elements -> {
     return Stream.iterate(Arrays.asList(elements), list -> {
       Collections.shuffle(list = new ArrayList<>(list));
       return list;
     }).skip(1).flatMap(List::stream).limit(50).collect(Collectors.joining());
   };
-
   //splitting the returned shuffleLambda string into a single number to be used for assigning a random Tetromino type.
   void splitShuffled(Function<String[], String> shuffleLambda) {
     randTetrimino = shuffleLambda.apply("0123456".split(""));
   }
-
   //retrieving a random tetromino from the shuffled list
   private int getPiece(int piecePosition) {
     return Integer.parseInt(randTetrimino.charAt(piecePosition) + "");
   }
-
   //initialize tetromino Colors to be assigned randomly
   void initColors(Color[] colors) {
     colors[0] = FIREBRICK;
@@ -54,12 +52,10 @@ public class FrontendLogic {
     colors[3] = GOLDENROD;
     colors[4] = DARKVIOLET;
   }
-
   //shuffling random shapes and applying colors
   public void readyShapes(Color[] colors){
     splitShuffled(shuffleLambda);
     initColors(colors);}
-
   //Generates a Tetromino from the 50 AbstractShapes and assigns it a type based on the string number chosen randomly in the splitShuffled method and shuffleLambda function.
   AbstractShape generate() {
     int type = getPiece(currentGame.getTetriminoNum());
@@ -97,7 +93,6 @@ public class FrontendLogic {
     currentGame.getUpNext().setShape(getNext(currentGame.getTetriminoNum()).moveToUpNext());
     return genPiece;
   }
-
   //Chooses the NextUp Tetromino Shape and assigns it a type based on the random string number from the shuffleLambda function.
   private AbstractShape getNext(int tetriminoNum) {
     int nextPieceNo;
@@ -137,8 +132,6 @@ public class FrontendLogic {
     genPiece.setFill(currentGame.getColors()[(int) (Math.random() * 5)]);
     return genPiece;
   }
-
-
   //move pieces down, check if pieces would spill over the game panel (game over condition) and check for removable lines
   void fallLogic() {
     GamePanel gPanel = currentGame.getGamePanel();
@@ -157,7 +150,6 @@ public class FrontendLogic {
       gPanel.checkRemovableLines(currentGame.getSound(), currentGame);
     }
   }
-
   //Snap Piece down to the bottom row instantly, check if pieces would spill over the game panel (game over condition) and check for removable lines
   void hardDropLogic() {
     GamePanel gPanel = currentGame.getGamePanel();
@@ -179,7 +171,6 @@ public class FrontendLogic {
       gPanel.checkRemovableLines(currentGame.getSound(), currentGame);
     }
   }
-
   //Pause game with sound
   void pause() {
     currentGame.getPlayBtn().setText("Play");
@@ -188,7 +179,6 @@ public class FrontendLogic {
     currentGame.setPaused(true);
     currentGame.getSound().setMenuMusic();
   }
-
   //Pause game without sound
   void pauseNoSound() {
     currentGame.getPlayBtn().setText("Play");
@@ -196,7 +186,6 @@ public class FrontendLogic {
     currentGame.setPaused(true);
     currentGame.getSound().setMenuMusic();
   }
-
   //Resumes game after pause
   void resumeGame() {
     currentGame.getPlayBtn().setDisable(false);
@@ -207,7 +196,6 @@ public class FrontendLogic {
     currentGame.setPaused(false);
     currentGame.getSound().setGameMusic();
   }
-
   // Prompts the user to quit the program
   void exit() {
     Alert alert = new Alert(Alert.AlertType.NONE);
