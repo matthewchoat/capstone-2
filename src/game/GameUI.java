@@ -73,7 +73,7 @@ public class GameUI extends Application {
 		board.init();
 		sound = new AudioController(this.getHostServices().getDocumentBase());
 		soundWorks = sound.audioWorks();
-		//initializing block size and creating game panel
+		//initializing piece size and creating game panel
 		Piece.initPieceSize(FIELD_WIDTH / 10);
 		gamePanel = new GamePanel(Piece.getSIZE()*10, Piece.getSIZE()*20, SCENE_HEIGHT);
 		//creating main HorizontalBox for main UI and creating accompanying Scene
@@ -247,7 +247,7 @@ public class GameUI extends Application {
 		//creating new Horizontal box for my game controls/instructions
 		HBox about = new HBox(4);
 		about.setAlignment(Pos.CENTER);
-		instructions = new Label("Clear lines and don't let the wood stack too high! \n Click 'Start' and move the falling blocks with \u2190 \u2191 \u2193 \u2192 & [SPACE].\nPress [Alt] + [Enter] to toggle fullscreen mode.");
+		instructions = new Label("Clear lines and don't let the wood stack too high! \n Click 'Start' and move the falling shapes with \u2190 \u2191 \u2193 \u2192 & [SPACE].\nPress [Alt] + [Enter] to toggle fullscreen mode.");
 		instructions.setTextAlignment(TextAlignment.CENTER);
 		instructions.setFont(Font.font(SCREEN_WIDTH * 0.00845));
 		instructions.setTextFill(BLACK);

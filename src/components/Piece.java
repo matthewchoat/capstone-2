@@ -1,4 +1,4 @@
-//This Class defines a single Piece to be shown uniformly on the UI
+//This Class defines a single Piece (4 pieces make up a "Shape") to be shown uniformly on the UI
 package components;
 
 import javafx.animation.KeyFrame;
@@ -17,7 +17,7 @@ public class Piece extends Pane implements Comparable<Piece> {
 	private GridPosition position;
 	private boolean p;
 	private static double gameSpeed = 0.06;
-	private boolean blockLoaded = false;
+	private boolean pieceLoaded = false;
 	private Rectangle rectangle;
 
 	//UI contructor
@@ -48,7 +48,7 @@ public class Piece extends Pane implements Comparable<Piece> {
 	}
 	//set position for pieces
 	public void setPosition(GridPosition pos) {
-		if(blockLoaded) {
+		if(pieceLoaded) {
 			setTranslateX(pos.getX() * SIZE);
 			setTranslateY(pos.getY() * SIZE);
 		}else {
@@ -101,8 +101,8 @@ public class Piece extends Pane implements Comparable<Piece> {
 		return gameSpeed;
 	}
 
-	public boolean isBlockLoaded() {
-		return blockLoaded;
+	public boolean isPieceLoaded() {
+		return pieceLoaded;
 	}
 
 	public Rectangle getRectangle() {
