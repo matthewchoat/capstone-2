@@ -1,1 +1,10 @@
 .DS_Store
+/shelf/
+/workspace.xml
+/misc.xml
+/modules.xml
+/uiDesigner.xml
+/workspace.xml
+.idea/
+/out/
+/Treetris.iml
